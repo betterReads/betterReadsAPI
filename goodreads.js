@@ -45,6 +45,13 @@
       }
       return this.getRequest(callback);
     };
+
+    /* REVIEWS */
+    Goodreads.prototype.getReviewsByIsbn = function(params, callback) {
+      this.options.path = 'https://www.goodreads.com/book/isbn?isbn=' + params.isbn + '&key=' + this.options.key; 
+      return this.getRequest(callback);
+    };
+
     /* NOTE: Not Working Yet!!!! */
     Goodreads.prototype.getFriends = function(userId, accessToken, accessTokenSecret, callback) {
       var oa;
