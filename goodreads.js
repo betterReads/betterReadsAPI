@@ -53,6 +53,12 @@
     };
 
     /* SEARCH */
+    // title, author, genre, all
+    Goodreads.prototype.searchBook = function(params, callback) {
+      this.options.path = 'https://www.goodreads.com/search.xml?key=' + this.options.key + '&q=' + encodeURI(params.query);
+      return this.getRequest(callback);
+    }; 
+
     Goodreads.prototype.searchAuthor = function(author, callback) {
       this.options.path = 'https://www.goodreads.com/api/author_url/' + encodeURI(author) + '?key=' + this.options.key;
       return this.getRequest(callback);

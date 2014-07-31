@@ -41,15 +41,20 @@ gr = new goodreads.client({
 
 
 //search for author
-gr.searchAuthor('Smith', function(json) {
-  console.log(arguments);
-  if (json) {
-    console.log(json.GoodreadsResponse.author);
-  }
-});
+//only returns one result
+// gr.searchAuthor('Vonnegut', function(json) {
+//   if (json) {
+//     console.log(json.GoodreadsResponse.author);
+//   }
+// });
 
 //search for book
-
+gr.searchBook({query: 'vonnegut'}, function(json) {
+  if (json) {
+    // console.log(json.GoodreadsResponse.search[0].results[0].work);
+    console.log(json.GoodreadsResponse.search[0].results[0].work[0]);
+  }
+});
 
 
 //see friend updates
