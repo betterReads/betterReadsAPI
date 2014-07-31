@@ -47,6 +47,7 @@
     };
 
     /* REVIEWS */
+    //returns imbeded review widget
     Goodreads.prototype.getReviewsByIsbn = function(isbn, callback) {
       this.options.path = 'https://www.goodreads.com/book/isbn?isbn=' + isbn + '&key=' + this.options.key; 
       return this.getRequest(callback);
@@ -56,6 +57,14 @@
     // title, author, genre, all
     Goodreads.prototype.searchBook = function(params, callback) {
       this.options.path = 'https://www.goodreads.com/search.xml?key=' + this.options.key + '&q=' + encodeURI(params.query);
+      if (params.page) {
+        this.options.path = this.options.path + '&page=' + params.page;
+      }
+      if (params.search) {
+        //title, author, genre, all
+        this.options.path = this.options.path + '&searchfield=' + params.search;
+
+      }
       return this.getRequest(callback);
     }; 
 

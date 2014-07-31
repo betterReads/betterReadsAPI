@@ -49,12 +49,14 @@ gr = new goodreads.client({
 // });
 
 //search for book
-gr.searchBook({query: 'vonnegut'}, function(json) {
-  if (json) {
-    // console.log(json.GoodreadsResponse.search[0].results[0].work);
-    console.log(json.GoodreadsResponse.search[0].results[0].work[0]);
-  }
-});
+// gr.searchBook({query: 'vonnegut', page: 2, search: 'all'}, function(json) {
+//   if (json) {
+//     //list of books
+//     console.log(json.GoodreadsResponse.search[0].results[0].work);
+//     //book image details
+//     console.log(json.GoodreadsResponse.search[0].results[0].work[0].best_book[0]);
+//   }
+// });
 
 
 //see friend updates
