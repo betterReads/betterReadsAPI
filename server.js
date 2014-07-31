@@ -40,12 +40,21 @@ gr = new goodreads.client({
 // });
 
 
-//search by author or book
+//search for author
+gr.searchAuthor('Smith', function(json) {
+  console.log(arguments);
+  if (json) {
+    console.log(json.GoodreadsResponse.author);
+  }
+});
 
-//search amazon for reviews by isbn
+//search for book
+
+
 
 //see friend updates
 
+//search amazon for reviews by isbn
 
 
 app.get('/*', function(req, res){
