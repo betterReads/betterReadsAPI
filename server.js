@@ -89,15 +89,13 @@ gr.getReviewsByIsbn('1400067820', function(json) {
 
 });
 
-
+//see goodreads recommendations
 
 //see friend updates
 
 //add book to shelf (to-read, read, etc)
 
 //rate book
-
-//search amazon for reviews by isbn
 
 
 app.get('/*', function(req, res){
