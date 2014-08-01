@@ -5,6 +5,17 @@
   xml2js = require('xml2js');
   oauth = (require('oauth')).OAuth;
   util = require('util');
+
+  //add supplant to inject values into string
+  String.prototype.supplant = function(o) {
+    return this.replace(/{([^{}]*)}/g,
+      function (a, b) {
+        var r = o[b];
+        return typeof r === 'string' || typeof r === 'number' ? r : a;
+      }
+    );
+  };
+
   Goodreads = (function() {
     /* CONFIG */    var clone;
     function Goodreads(config) {
@@ -35,14 +46,26 @@
       this.options.path = 'http://www.goodreads.com/shelf/list.xml?user_id=' + userId + "&key=" + this.options.key;
       return this.getRequest(callback);
     };
-    Goodreads.prototype.getSingleShelf = function(userId, params, callback) {
-      this.options.path = 'http://www.goodreads.com/review/list/' + userId + '.xml?key=' + this.options.key + '&shelf=' + params.shelf;
+    Goodreads.prototype.getSingleShelf = function(params, callback) {
+      //set up base path with required params
+      this.options.path = 'http://www.goodreads.com/review/list/{id}.xml?key={key}&shelf={shelf}'.supplant({id: params.id, key: this.options.key, shelf: params.shelf});
+      //check for optional params
       if (params.page) {
         this.options.path = this.options.path + '&page=' + params.page;
       }
       if (params.per_page) {
         this.options.path = this.options.path + '&per_page=' + params.per_page;
       }
+      if (params.sort) {
+        this.options.path = this.options.path + '&sort=' + params.sort;
+      }
+      if (params.query) {
+        this.options.path = this.options.path + '&search_query=' + params.query;
+      }
+      if (params.order) {
+        this.options.path = this.options.path + '&order=' + params.order;
+      }
+
       return this.getRequest(callback);
     };
 

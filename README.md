@@ -3,7 +3,6 @@
 ##User shelves
 ###GET names of all of a user's shelves
 Based off Goodreads' [shelves.list](https://www.goodreads.com/api#shelves.list)
-Requires params and a callback.
 Params:
 - key: Developer key (required)
 - id: Goodreads user id (required)
@@ -11,7 +10,6 @@ Params:
 
 ###POST new shelf
 Based off Goodreads' [user_shelves.create](https://www.goodreads.com/api#user_shelves.create)   
-Requires params and a callback.
 
 Params:
 - key: Developer key (required)
@@ -25,7 +23,6 @@ Params:
 ##Books on single shelf
 ###GET books from single shelf
 Based off Goodreads' [reviews.list](https://www.goodreads.com/api#reviews.list)
-Requires params and a callback.
 
 Params:
 - key: Developer key (required)
@@ -39,7 +36,6 @@ Params:
 
 ###POST books to shelf
 Based off Goodreads' [shelves.add_to_shelf](https://www.goodreads.com/api#shelves.add_to_shelf)
-Requires params and a callback.
 
 Params:
 - key: Developer key (required)
@@ -52,7 +48,6 @@ Params:
 ###GET reviews of a book based on its ISBN
 ####Return iframe of reviews or actual reviews
 Based off Goodreads' [book.show_by_isbn](https://www.goodreads.com/api#book.show_by_isbn)
-Requires params and a callback.
 
 Params:
 - key: Developer key (required)
@@ -62,7 +57,6 @@ Params:
 
 ###POST review of a book based on its ISBN
 Based off Goodreads' [review.create](https://www.goodreads.com/api#review.create)
-Requires params and a callback.
 
 Params:
 - key: Developer key (required)
@@ -76,16 +70,12 @@ Params:
 ##Book search by author, title, or ISBN
 ###GET search results of books by author, title, or ISBN
 Based off Goodreads' [search.books](https://www.goodreads.com/api#search.books)
-Requires params and a callback.
 
 Params:
 - key: Developer key (required)
 - q: The query text to match against book title, author, and ISBN fields. Supports boolean operators and phrase searching. (required)
 - page: Which page to return; 1-N (optional, default 1)
 - field: Field to search; title, author, genre, or all (optional, default all)
-
-
-
 
 
 

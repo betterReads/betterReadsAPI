@@ -19,7 +19,7 @@ var getIframeHtml = function(url) {
 };
 
 //set up goodreads object with key and secret
-gr = new goodreads.client({
+var gr = new goodreads.client({
   'key': credentials.key,
   'secret': credentials.secret
 });
@@ -40,15 +40,6 @@ gr = new goodreads.client({
 //       userShelves.push(shelf.name);
 //     }
 //     console.log(userShelves);
-//   }
-// });
-
-
-// //get all books from certain shelf
-// //max per_page of 200
-// gr.getSingleShelf('4067289', {shelf: 'to-read', page: 1, per_page: 5}, function(json) {
-//   if (json) {
-//     console.log(json.GoodreadsResponse.books[0].book);
 //   }
 // });
 
@@ -99,7 +90,28 @@ gr.getReviewsByIsbn('1400067820', function(json) {
 
 
 app.get('/*', function(req, res){
-  res.send('Hello world');
+  res.send('better reads API');
+});
+
+app.get('/booksOnShelf', function(req, res) {
+  //get all books from certain shelf
+  //max per_page of 200
+
+  //example:
+  // gr.getSingleShelf({id: '4067289', shelf: 'to-read', page: 1, per_page: 5}, function(json) {
+  //   if (json) {
+  //     console.log(json.GoodreadsResponse.books[0].book);
+  //   }
+  // });
+  var gr = new goodreads.client({
+    'key': req.body.key,
+    'secret': req.body.secret
+  });
+
+  gr.getSingleShelf(req.body.params, function(data) {
+    res.send(200, JSON.stringify(data));
+  });
+
 });
 
 var server = app.listen(port, function(){
