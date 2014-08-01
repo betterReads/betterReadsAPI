@@ -64,21 +64,21 @@ var gr = new goodreads.client({
 
 //good reads review
 // returns an iframe; need to adjust CSS to as to make it look nicer
-gr.getReviewsByIsbn('1400067820', function(json) {
-  //pull out iframe data
-  var xml=json.GoodreadsResponse.book[0].reviews_widget[0];
+// gr.getReviewsByIsbn('1400067820', function(json) {
+//   //pull out iframe data
+//   var xml=json.GoodreadsResponse.book[0].reviews_widget[0];
 
-  //search for iframe url
-  var iframeInd = xml.indexOf('<iframe');
-  var iframeEnd = xml.indexOf('width', iframeInd);
+//   //search for iframe url
+//   var iframeInd = xml.indexOf('<iframe');
+//   var iframeEnd = xml.indexOf('width', iframeInd);
 
-  var iframeUrl = xml.slice(iframeInd+29, iframeEnd-2);
-  console.log(iframeUrl);
+//   var iframeUrl = xml.slice(iframeInd+29, iframeEnd-2);
+//   console.log(iframeUrl);
 
-  //load html from iframe link
-  getIframeHtml(iframeUrl);
+//   //load html from iframe link
+//   getIframeHtml(iframeUrl);
 
-});
+// });
 
 //integrate NYT best seller API
 
@@ -98,10 +98,9 @@ app.get('/booksOnShelf', function(req, res) {
   //max per_page of 200
 
   //example:
-  // gr.getSingleShelf({id: '4067289', shelf: 'to-read', page: 1, per_page: 5}, function(json) {
-  //   if (json) {
-  //     console.log(json.GoodreadsResponse.books[0].book);
-  //   }
+  // var params = {id: '4067289', shelf: 'to-read', page: 2, per_page: 5, sort: 'bossy'};
+  // gr.getSingleShelf(params, function(data) {
+  //   console.log(data.GoodreadsResponse.books[0].book);
   // });
   var gr = new goodreads.client({
     'key': req.body.key,
@@ -109,7 +108,7 @@ app.get('/booksOnShelf', function(req, res) {
   });
 
   gr.getSingleShelf(req.body.params, function(data) {
-    res.send(200, JSON.stringify(data));
+    res.send(200, JSON.stringify(data.GoodreadsResponse.books[0].book));
   });
 
 });

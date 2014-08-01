@@ -30,7 +30,7 @@ Params:
 - shelf: Name of shelf (required)
 - sort: Whether and how to sort results; title, author, cover, rating, year_pub, date_pub, date_pub_edition, date_started, date_read, date_updated, date_added, recommender, avg_rating, num_ratings, review, read_count, votes, random, comments, notes, isbn, isbn13, asin, num_pages, format, position, shelves, owned, date_purchased, purchase_location, condition (optional)
 - query: Query text to match against member's books (optional)
-- order: Whether and how to order results; a (ascending), d (descending) (optional)
+- order: Whether and how to order results; a (ascending), d (descending) (optional, default a)
 - page: Page of results; 1-N (optional)
 - per_page: Results listed per page; 1-200 (optional)
 
