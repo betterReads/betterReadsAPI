@@ -2,9 +2,24 @@
 <html>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
   <script src="app.js"></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+  <style>
+    body {
+      font-family: 'Open Sans';
+    }
+  </style>
 <head>
 </head>
 <body>
-  <div ng-app='goodreads' ng-controller='queryAuthor' ng-init='queryGR()'></div>
+  <div ng-app='goodreads' ng-controller='queryAuthor' ng-init='queryGR()'>
+    <ul ng-repeat='book in books'>
+      <img src='{{book.image_url[0]}}'></img>
+      <div>{{book.title[0]}} by {{book.authors[0].author[0].name[0]}}</div>
+      <div>Rating: {{book.average_rating[0]}}/5 ({{book.ratings_count[0]}} Ratings)</div>
+      <div>{{book.text_reviews_count[0]._}} Reviews</div>
+      
+
+    </ul>
+  </div>
 </body>
 </html>
