@@ -1,9 +1,10 @@
 //server related dependencies
 var express = require('express');
-var app = express();
-var port = process.env.PORT || 80045;
+var port = process.env.PORT || 8045;
 var goodreads = require('./goodreads');
 var request = require('request');
+var cors=require('cors');
+var bodyParser = require('body-parser');
 
 //load credentialls locally or from azure
 if (process.env.PORT===undefined) {
@@ -11,10 +12,15 @@ if (process.env.PORT===undefined) {
 } else {
   var credentials = {
     key: process.env['key'],
-    secret: process.env['secret']  
+    secret: process.env['secret']
   };
 }
 
+//initialize app and use cors & body parser
+var app = express();
+app.use(cors());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 //download html from iframe
 var getIframeHtml = function(url) {
@@ -98,11 +104,6 @@ var gr = new goodreads.client({
 
 //rate book
 
-
-app.get('/*', function(req, res){
-  res.send('better reads API');
-});
-
 app.get('/booksOnShelf', function(req, res) {
   //get all books from certain shelf
   //max per_page of 200
@@ -112,15 +113,24 @@ app.get('/booksOnShelf', function(req, res) {
   // gr.getSingleShelf(params, function(data) {
   //   console.log(data.GoodreadsResponse.books[0].book);
   // });
+  console.log(req.query);
+
   var gr = new goodreads.client({
-    'key': req.body.key,
-    'secret': req.body.secret
+    // 'key': req.query.key,
+    // 'secret': req.query.secret
+    'key': credentials.key,
+    'secret': credentials.secret
   });
 
-  gr.getSingleShelf(req.body.params, function(data) {
-    res.send(200, JSON.stringify(data.GoodreadsResponse.books[0].book));
+  gr.getSingleShelf(req.query, function(data) {
+    res.status(200).send(JSON.stringify(data.GoodreadsResponse.books[0].book));
   });
 
+});
+
+
+app.get('/', function(req, res){
+  res.status(200).send('better reads API');
 });
 
 var server = app.listen(port, function(){

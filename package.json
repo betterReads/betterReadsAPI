@@ -6,6 +6,8 @@
     "start": "NODE_PATH=./config NODE_ENV=production nodemon server.js"
   },
   "dependencies": {
+    "body-parser": "^1.5.2",
+    "cors": "^2.4.1",
     "express": "^4.7.2",
     "oauth": "^0.9.12",
     "request": "^2.39.0",
