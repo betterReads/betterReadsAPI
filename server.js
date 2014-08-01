@@ -3,8 +3,18 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 80045;
 var goodreads = require('./goodreads');
-var credentials = require('./credentials.js');
 var request = require('request');
+
+//load credentialls locally or from azure
+if (process.env.PORT===undefined) {
+  var credentials = require('./credentials.js');
+} else {
+  var credentials = {
+    key: process.env['key'],
+    secret: process.env['secret']  
+  };
+}
+
 
 //download html from iframe
 var getIframeHtml = function(url) {
