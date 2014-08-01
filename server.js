@@ -89,6 +89,7 @@ gr.getReviewsByIsbn('1400067820', function(json) {
 
 });
 
+//integrate NYT best seller API
 
 //see friend updates
 
