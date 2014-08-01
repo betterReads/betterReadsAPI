@@ -1,0 +1,21 @@
+{
+  "name": "betterReadsAPI",
+  "description": "A RESTful server for betterReads",
+  "version": "1.0.1",
+  "scripts": {
+    "start": "NODE_PATH=./config NODE_ENV=production nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.7.2",
+    "oauth": "^0.9.12",
+    "request": "^2.39.0",
+    "xml2js": "^0.4.4"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/betterReads/betterReadsAPI.git"
+  }
+}
