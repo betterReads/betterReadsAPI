@@ -4,8 +4,21 @@ var app = express();
 var port = process.env.PORT || 80045;
 var goodreads = require('./goodreads');
 var credentials = require('./credentials.js');
+var request = require('request');
 
+//download html from iframe
+var getIframeHtml = function(url) {
+  request(url, function (error, response, body) {
+    if (error) {
+      throw error;
+    }
+    if (!error && response.statusCode == 200) {
+      console.log(body);
+    }
+  });
+};
 
+//set up goodreads object with key and secret
 gr = new goodreads.client({
   'key': credentials.key,
   'secret': credentials.secret
@@ -60,9 +73,10 @@ gr = new goodreads.client({
 
 //good reads review
 //returns an iframe; need to adjust CSS to as to make it look nicer
-gr.getReviewsByIsbn('1400067820', function(json) {
-  console.log(json.GoodreadsResponse.book[0].reviews_widget[0]);
-});
+// gr.getReviewsByIsbn('1400067820', function(json) {
+//   console.log(json.GoodreadsResponse.book[0].reviews_widget[0]);
+// });
+
 
 
 //see friend updates
