@@ -72,10 +72,22 @@ gr = new goodreads.client({
 // });
 
 //good reads review
-//returns an iframe; need to adjust CSS to as to make it look nicer
-// gr.getReviewsByIsbn('1400067820', function(json) {
-//   console.log(json.GoodreadsResponse.book[0].reviews_widget[0]);
-// });
+// returns an iframe; need to adjust CSS to as to make it look nicer
+gr.getReviewsByIsbn('1400067820', function(json) {
+  //pull out iframe data
+  var xml=json.GoodreadsResponse.book[0].reviews_widget[0];
+
+  //search for iframe url
+  var iframeInd = xml.indexOf('<iframe');
+  var iframeEnd = xml.indexOf('width', iframeInd);
+
+  var iframeUrl = xml.slice(iframeInd+29, iframeEnd-2);
+  console.log(iframeUrl);
+
+  //load html from iframe link
+  getIframeHtml(iframeUrl);
+
+});
 
 
 
