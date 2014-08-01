@@ -28,9 +28,9 @@ gr = new goodreads.client({
 //   console.log(arguments);
 // });
 
-// var userShelves=[];
-// //get all user's shelves
+//get all user's shelves
 // gr.getShelves('4067289', function(json) {
+//   var userShelves=[];
 //   if (json) {
 //     var shelves=json.GoodreadsResponse.shelves[0].user_shelf;
 //     // console.log(shelves);
@@ -89,7 +89,6 @@ gr.getReviewsByIsbn('1400067820', function(json) {
 
 });
 
-//see goodreads recommendations
 
 //see friend updates
 
