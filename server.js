@@ -23,13 +23,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //download html from iframe
-var getIframeHtml = function(url) {
+var getIframeHtml = function(url, callback) {
   request(url, function (error, response, body) {
     if (error) {
       throw error;
     }
     if (!error && response.statusCode == 200) {
-      console.log(body);
+      callback(body);
     }
   });
 };
@@ -180,9 +180,18 @@ app.get('/bookReviews', function(req, res) {
       var iframeUrl = xml.slice(iframeInd+29, iframeEnd-2);
 
       //load html from iframe link
-      var iframeHtml = getIframeHtml(iframeUrl);
-      console.log(iframeHtml);
-      res.status(200).send(iframeHtml);
+      getIframeHtml(iframeUrl, function(iframeHtml) {
+        console.log(iframeHtml);
+
+        var reviewStart = iframeHtml.indexOf('<div class="gr_reviews_container" id="gr_reviews_');
+        var reviewEnd = iframeHtml.indexOf('</html>', reviewStart);
+        var reviewHtml = iframeHtml.slice(reviewStart, reviewEnd - 8);
+
+        // console.log(reviewStart, reviewEnd);
+        // console.log(reviewHtml);
+
+        res.status(200).send(iframeHtml);
+      });
     }
   });
 });
