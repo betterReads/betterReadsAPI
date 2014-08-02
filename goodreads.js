@@ -24,7 +24,7 @@
         port: 80,
         key: config.key,
         secret: config.secret,
-        callback: config.callback || 'http://localhost:80045/callback',
+        callback: config.callback || 'http://localhost:8045/callback',
         method: 'GET',
         path: '',
         oauth_request_url: 'http://goodreads.com/oauth/request_token',
@@ -42,11 +42,18 @@
       return this.options.callback = gr_callback || this.options.callback;
     };
     /* BOOKSHELVES */
-    Goodreads.prototype.getShelves = function(userId, callback) {
-      this.options.path = 'http://www.goodreads.com/shelf/list.xml?user_id=' + userId + "&key=" + this.options.key;
+    Goodreads.prototype.getUserShelves = function(params, callback) {
+      //set up base path with required params
+      this.options.path = 'http://www.goodreads.com/shelf/list.xml?user_id={id}&key={key}'.supplant({id: params.id, key: this.options.key});
+      
+      //check for optional params
+      if (params.page) {
+        this.options.path = this.options.path + '&page=' + params.page;
+      }
+      
       return this.getRequest(callback);
     };
-    Goodreads.prototype.getSingleShelf = function(params, callback) {
+    Goodreads.prototype.getBooksOnShelf = function(params, callback) {
       //set up base path with required params
       this.options.path = 'http://www.goodreads.com/review/list/{id}.xml&v2?key={key}&shelf={shelf}'.supplant({id: params.id, key: this.options.key, shelf: params.shelf});
 

@@ -35,30 +35,27 @@ var getIframeHtml = function(url) {
 };
 
 //set up goodreads object with key and secret
-var gr = new goodreads.client({
-  'key': credentials.key,
-  'secret': credentials.secret
-});
+var initGR = function(req) {
+  if (req.method==='GET') {
+    var params=req.query;
+  } else if (req.method==='POST') {
+    var params=req.body;
+  }
+  // var gr = new goodreads.client({
+  //   'key': params.key,
+  //   'secret': params.secret
+  // });
+  var gr = new goodreads.client({
+    'key': credentials.key,
+    'secret': credentials.secret
+  });
+
+  return gr;
+};
 
 // gr.requestToken(function() {
 //   console.log(arguments);
 // });
-
-//get all user's shelves
-// gr.getShelves('4067289', function(json) {
-//   var userShelves=[];
-//   if (json) {
-//     var shelves=json.GoodreadsResponse.shelves[0].user_shelf;
-//     // console.log(shelves);
-//     for (var i=0; i<shelves.length; i++) {
-//       var shelf = shelves[i];
-//       console.log(shelf.name, shelf.id);
-//       userShelves.push(shelf.name);
-//     }
-//     console.log(userShelves);
-//   }
-// });
-
 
 //search for author
 //only returns one result
@@ -115,19 +112,41 @@ app.get('/booksOnShelf', function(req, res) {
   // });
   console.log(req.query);
 
-  var gr = new goodreads.client({
-    // 'key': req.query.key,
-    // 'secret': req.query.secret
-    'key': credentials.key,
-    'secret': credentials.secret
-  });
+  var gr = initGR(req);
 
-  gr.getSingleShelf(req.query, function(data) {
+  gr.getBooksOnShelf(req.query, function(data) {
     res.status(200).send(JSON.stringify(data.GoodreadsResponse.books[0].book));
   });
 
 });
 
+app.get('/userShelves', function(req, res) {
+  //list all of a user's shelves
+
+  //example
+  // gr.getShelves({id: '4067289', page: 1}, function(data) {
+  //   var userShelves=[];
+  //   if (data) {
+  //     var shelves=data.GoodreadsResponse.shelves[0].user_shelf;
+  //     // console.log(shelves);
+  //     for (var i=0; i<shelves.length; i++) {
+  //       var shelf = shelves[i];
+  //       console.log(shelf.name, shelf.id);
+  //       userShelves.push(shelf.name);
+  //     }
+  //     console.log(userShelves);
+  //   }
+  // });
+
+  console.log(req.query);
+  var gr = initGR(req);
+
+  // APPEARS THAT PAGE IS IRRELEVANT
+  gr.getUserShelves(req.query, function(data) {
+    // res.status(200).send(JSON.stringify(data.GoodreadsResponse));
+    res.status(200).send(JSON.stringify(data.GoodreadsResponse.shelves[0].user_shelf));
+  });
+});
 
 app.get('/', function(req, res){
   res.status(200).send('better reads API');

@@ -7,6 +7,7 @@ Params:
 - key: Developer key (required)
 - id: Goodreads user id (required)
 - page: Page of results; 1-N (optional; default 1)
+  - [note: it appears that goodreads returns the full number of shelves and that the page parameter is irrelevant]
 
 ###POST new shelf
 Based off Goodreads' [user_shelves.create](https://www.goodreads.com/api#user_shelves.create)   

@@ -13,7 +13,19 @@ app.controller('queryAuthor', function($http, $scope) {
       console.log(data);
       $scope.books=data;
     });
+
+    $http({
+      url: 'http://localhost:8045/userShelves',
+      method: 'GET',
+      params: {id: '4067289', page: 1}
+    }).success(function(data) {
+      console.log('success');
+      console.log(data);
+    });
+
   };
+
+
 
 
 });
