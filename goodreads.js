@@ -80,7 +80,13 @@
     /* REVIEWS */
     //returns imbeded review widget
     Goodreads.prototype.getReviewsByIsbn = function(params, callback) {
-      this.options.path = 'https://www.goodreads.com/book/isbn?isbn=' + params.isbn + '&key=' + this.options.key; 
+      //set up base path with required params
+      this.options.path = 'https://www.goodreads.com/book/isbn?isbn={isbn}&key={key}'.supplant({isbn: params.isbn, key: this.options.key});
+
+      //check for optional params
+      if (params.rating) {
+        this.options.path = this.options.path + '&rating=' + params.rating;
+      }
       return this.getRequest(callback);
     };
 

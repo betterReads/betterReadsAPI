@@ -163,12 +163,27 @@ app.get('/bookReviews', function(req, res) {
 
   // });
 
-
   console.log(req.query);
   var gr = initGR(req);
 
   gr.getReviewsByIsbn(req.query, function(data) {
-    res.status(200).send(JSON.stringify(data.GoodreadsResponse));
+
+    console.log('review search');
+    if (req.query.iframe===undefined || req.query.iframe==='true') {
+      res.status(200).send(JSON.stringify(data.GoodreadsResponse.book[0]));
+    } else {
+      var xml=data.GoodreadsResponse.book[0].reviews_widget[0];
+
+      //parse iframe url
+      var iframeInd = xml.indexOf('<iframe');
+      var iframeEnd = xml.indexOf('width', iframeInd);
+      var iframeUrl = xml.slice(iframeInd+29, iframeEnd-2);
+
+      //load html from iframe link
+      var iframeHtml = getIframeHtml(iframeUrl);
+      console.log(iframeHtml);
+      res.status(200).send(iframeHtml);
+    }
   });
 });
 
