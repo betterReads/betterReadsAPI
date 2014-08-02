@@ -79,8 +79,8 @@
 
     /* REVIEWS */
     //returns imbeded review widget
-    Goodreads.prototype.getReviewsByIsbn = function(isbn, callback) {
-      this.options.path = 'https://www.goodreads.com/book/isbn?isbn=' + isbn + '&key=' + this.options.key; 
+    Goodreads.prototype.getReviewsByIsbn = function(params, callback) {
+      this.options.path = 'https://www.goodreads.com/book/isbn?isbn=' + params.isbn + '&key=' + this.options.key; 
       return this.getRequest(callback);
     };
 

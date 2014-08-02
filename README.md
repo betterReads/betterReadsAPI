@@ -54,6 +54,7 @@ Params:
 - key: Developer key (required)
 - isbn: The ISBN of the book to lookup (required)
 - rating: Show only reviews with a particular rating (optional)
+- text: Only show reviews that have text; true or false (optional; default false)
 
 
 ###POST review of a book based on its ISBN

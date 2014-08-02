@@ -32,6 +32,15 @@ app.controller('queryAuthor', function($http, $scope) {
       console.log(data);
     });
 
+    $http({
+      url: 'http://localhost:8045/bookReviews',
+      method: 'GET',
+      params: {isbn: '1400067820', rating: 4, text: true}
+    }).success(function(data) {
+      console.log('book reviews');
+      console.log(data);
+    });    
+
   };
 
 

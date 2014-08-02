@@ -65,25 +65,6 @@ var initGR = function(req) {
 //   }
 // });
 
-
-//good reads review
-// returns an iframe; need to adjust CSS to as to make it look nicer
-// gr.getReviewsByIsbn('1400067820', function(json) {
-//   //pull out iframe data
-//   var xml=json.GoodreadsResponse.book[0].reviews_widget[0];
-
-//   //search for iframe url
-//   var iframeInd = xml.indexOf('<iframe');
-//   var iframeEnd = xml.indexOf('width', iframeInd);
-
-//   var iframeUrl = xml.slice(iframeInd+29, iframeEnd-2);
-//   console.log(iframeUrl);
-
-//   //load html from iframe link
-//   getIframeHtml(iframeUrl);
-
-// });
-
 //integrate NYT best seller API
 
 //see friend updates
@@ -153,7 +134,6 @@ app.get('/searchBooks', function(req, res) {
   //   }
   // });
 
-
   console.log(req.query);
   var gr = initGR(req);
 
@@ -162,6 +142,35 @@ app.get('/searchBooks', function(req, res) {
   });
 });
 
+app.get('/bookReviews', function(req, res) {
+  //get reviews based on book isbn
+
+  // example
+  // returns an iframe; need to adjust CSS to as to make it look nicer
+  // gr.getReviewsByIsbn('1400067820', function(json) {
+  //   //pull out iframe data
+  //   var xml=json.GoodreadsResponse.book[0].reviews_widget[0];
+
+  //   //search for iframe url
+  //   var iframeInd = xml.indexOf('<iframe');
+  //   var iframeEnd = xml.indexOf('width', iframeInd);
+
+  //   var iframeUrl = xml.slice(iframeInd+29, iframeEnd-2);
+  //   console.log(iframeUrl);
+
+  //   //load html from iframe link
+  //   getIframeHtml(iframeUrl);
+
+  // });
+
+
+  console.log(req.query);
+  var gr = initGR(req);
+
+  gr.getReviewsByIsbn(req.query, function(data) {
+    res.status(200).send(JSON.stringify(data.GoodreadsResponse));
+  });
+});
 
 app.get('/', function(req, res){
   res.status(200).send('better reads API');
