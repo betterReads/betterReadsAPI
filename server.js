@@ -181,16 +181,15 @@ app.get('/bookReviews', function(req, res) {
 
       //load html from iframe link
       getIframeHtml(iframeUrl, function(iframeHtml) {
-        console.log(iframeHtml);
 
         var reviewStart = iframeHtml.indexOf('<div class="gr_reviews_container" id="gr_reviews_');
         var reviewEnd = iframeHtml.indexOf('</html>', reviewStart);
         var reviewHtml = iframeHtml.slice(reviewStart, reviewEnd - 8);
 
         // console.log(reviewStart, reviewEnd);
-        // console.log(reviewHtml);
+        console.log(reviewHtml);
 
-        res.status(200).send(iframeHtml);
+        res.status(200).send(reviewHtml);
       });
     }
   });
