@@ -2,7 +2,7 @@
 
 ##User shelves
 
-Endpoint: /userShelves
+###URL Endpoint: /userShelves
 
 ###GET names of all of a user's shelves
 Based off Goodreads' [shelves.list](https://www.goodreads.com/api#shelves.list)
@@ -27,7 +27,7 @@ Params:
 
 ##Books on single shelf
 
-Endpoint: /booksOnShelf
+###URL Endpoint: /booksOnShelf
 
 ###GET books from single shelf
 Based off Goodreads' [reviews.list](https://www.goodreads.com/api#reviews.list)
@@ -54,7 +54,7 @@ Params:
 
 ##Book reviews by ISBN
 
-Endpoint: /bookReviews
+###URL Endpoint: /bookReviews
 
 ###GET reviews of a book based on its ISBN
 ####Return iframe of reviews or actual reviews
@@ -80,7 +80,7 @@ Params:
 
 ##Book search by author, title, or ISBN
 
-Endpoint: /searchBooks
+###URL Endpoint: /searchBooks
 
 ###GET search results of books by author, title, or ISBN
 Based off Goodreads' [search.books](https://www.goodreads.com/api#search.books)
