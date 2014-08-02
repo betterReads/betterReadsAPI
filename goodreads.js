@@ -50,7 +50,7 @@
       if (params.page) {
         this.options.path = this.options.path + '&page=' + params.page;
       }
-      
+
       return this.getRequest(callback);
     };
     Goodreads.prototype.getBooksOnShelf = function(params, callback) {
@@ -86,15 +86,17 @@
 
     /* SEARCH */
     // title, author, genre, all
-    Goodreads.prototype.searchBook = function(params, callback) {
-      this.options.path = 'https://www.goodreads.com/search.xml?key=' + this.options.key + '&q=' + encodeURI(params.query);
+    Goodreads.prototype.searchBooks = function(params, callback) {
+      //set up base path with required params
+      this.options.path = 'https://www.goodreads.com/search.xml?key={key}&q={query}'.supplant({key:this.options.key, query: params.query});
+      
+      //check for optional params
       if (params.page) {
         this.options.path = this.options.path + '&page=' + params.page;
       }
-      if (params.search) {
+      if (params.field) {
         //title, author, genre, all
-        this.options.path = this.options.path + '&searchfield=' + params.search;
-
+        this.options.path = this.options.path + '&searchfield=' + params.field;
       }
       return this.getRequest(callback);
     }; 

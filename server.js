@@ -65,15 +65,6 @@ var initGR = function(req) {
 //   }
 // });
 
-//search for book
-// gr.searchBook({query: 'vonnegut', page: 2, search: 'all'}, function(json) {
-//   if (json) {
-//     //list of books
-//     console.log(json.GoodreadsResponse.search[0].results[0].work);
-//     //book image details
-//     console.log(json.GoodreadsResponse.search[0].results[0].work[0].best_book[0]);
-//   }
-// });
 
 //good reads review
 // returns an iframe; need to adjust CSS to as to make it look nicer
@@ -141,12 +132,36 @@ app.get('/userShelves', function(req, res) {
   console.log(req.query);
   var gr = initGR(req);
 
-  // APPEARS THAT PAGE IS IRRELEVANT
+  // APPEARS THAT THE PAGE PARAMETER IS IRRELEVANT
   gr.getUserShelves(req.query, function(data) {
     // res.status(200).send(JSON.stringify(data.GoodreadsResponse));
     res.status(200).send(JSON.stringify(data.GoodreadsResponse.shelves[0].user_shelf));
   });
 });
+
+
+app.get('/searchBooks', function(req, res) {
+  //search for books
+
+  // example
+  // gr.searchBooks({query: 'vonnegut', page: 2, search: 'author'}, function(json) {
+  //   if (json) {
+  //     //list of books
+  //     console.log(json.GoodreadsResponse.search[0].results[0].work);
+  //     //book image details
+  //     console.log(json.GoodreadsResponse.search[0].results[0].work[0].best_book[0]);
+  //   }
+  // });
+
+
+  console.log(req.query);
+  var gr = initGR(req);
+
+  gr.searchBooks(req.query, function(data) {
+    res.status(200).send(JSON.stringify(data.GoodreadsResponse.search[0].results[0].work));
+  });
+});
+
 
 app.get('/', function(req, res){
   res.status(200).send('better reads API');

@@ -74,7 +74,7 @@ Based off Goodreads' [search.books](https://www.goodreads.com/api#search.books)
 
 Params:
 - key: Developer key (required)
-- q: The query text to match against book title, author, and ISBN fields. Supports boolean operators and phrase searching. (required)
+- query: The query text to match against book title, author, and ISBN fields. Supports boolean operators and phrase searching. (required)
 - page: Which page to return; 1-N (optional, default 1)
 - field: Field to search; title, author, genre, or all (optional, default all)
 
