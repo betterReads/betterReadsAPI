@@ -9,6 +9,7 @@
     "body-parser": "^1.5.2",
     "cors": "^2.4.1",
     "express": "^4.7.2",
+    "jasmine-node": "^1.14.5",
     "oauth": "^0.9.12",
     "request": "^2.39.0",
     "xml2js": "^0.4.4"
