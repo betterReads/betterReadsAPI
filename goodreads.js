@@ -24,7 +24,7 @@
         port: 80,
         key: config.key,
         secret: config.secret,
-        callback: config.callback || 'http://localhost:8045/callback',
+        callback: config.callback || 'http://localhost:8045/verifyAuthentication',
         method: 'GET',
         path: '',
         oauth_request_url: 'http://goodreads.com/oauth/request_token',

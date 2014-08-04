@@ -5,8 +5,7 @@ var goodreads = require('./goodreads');
 var request = require('request');
 var cors=require('cors');
 var bodyParser = require('body-parser');
-var passport = require('passport');
-var GoodreadsStrategy = require('passport-goodreads').Strategy;
+var open = require('open');
 
 //load credentialls locally or from azure
 if (process.env.PORT===undefined) {
@@ -18,47 +17,11 @@ if (process.env.PORT===undefined) {
   };
 }
 
-//set up user authentication
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
-
-// Use the GoodreadsStrategy within Passport.
-//   Strategies in passport require a `verify` function, which accept
-//   credentials (in this case, a token, tokenSecret, and Goodreads profile), and
-//   invoke a callback with a user object.
-passport.use(new GoodreadsStrategy({
-    consumerKey: credentials.key,
-    consumerSecret: credentials.secret,
-    callbackURL: "http://127.0.0.1:8045/auth/goodreads/callback"
-  },
-  function(token, tokenSecret, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      
-      // To keep the example simple, the user's Goodreads profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Goodreads account with a user record in your database,
-      // and return that user instead.
-      console.log('authenticated');
-      return done(null, profile);
-    });
-  }
-));
-
 //initialize app and use cors & body parser
 var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.authenticate('goodreads');
 
 //download html from iframe
 var getIframeHtml = function(url, callback) {
@@ -94,6 +57,7 @@ var initGR = function(req) {
 // var gr = initGR({method: undefined});
 // gr.requestToken(function(data) {
 //   console.log(data);
+//   open(data.url);
 // });
 
 //search for author
@@ -111,6 +75,12 @@ var initGR = function(req) {
 //add book to shelf (to-read, read, etc)
 
 //rate book
+
+//verify authentication
+app.get('/verifyAuthentication', function(req, res) {
+  console.log(req.query);
+  res.status(200).send('Verified!');
+});
 
 app.get('/booksOnShelf', function(req, res) {
   //get all books from certain shelf
