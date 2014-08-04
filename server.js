@@ -49,7 +49,9 @@ gr.requestToken(function(data) {
   auth.token =  data.oauthToken;
   auth.secret = data.oauthTokenSecret;
   console.log(data);
-  open(data.url);
+
+  // MUST UNCOMMENT THIS WHEN READY FOR OAUTH
+  // open(data.url);
 });
 
 
@@ -69,28 +71,14 @@ var getIframeHtml = function(url, callback) {
 
 //see friend updates
 
-//add book to shelf (to-read, read, etc)
-
 //rate book
 
-//add book to shelf
-setTimeout(function() {
-  console.log(auth);
-  var gr = new goodreads.client({
-    key: credentials.key,
-    secret: credentials.secret,
-    accessToken: auth.token,
-    accessSecret: auth.secret
-  });
-  gr.addBooksToShelf({bookId: '62291', shelf: 'a'});
-}, 5000);
+//find goodreads id from isbn
 
-app.post('/booksOnShelf', function(req, res) {
-  var gr = new goodreads.client({
-    key: credentials.key,
-    secret: credentials.secret,
-    accessToken: auth.token,
-    accessSecret: auth.secret
+app.get('/authenticate', function(req, res) {
+  var gr = initGR(req);
+  gr.requestToken(function(data) {
+    res.status(200).send(data);
   });
 });
 
@@ -116,8 +104,34 @@ app.get('/booksOnShelf', function(req, res) {
   gr.getBooksOnShelf(req.query, function(data) {
     res.status(200).send(JSON.stringify(data.GoodreadsResponse.books[0].book));
   });
-
 });
+
+app.post('/booksOnShelf', function(req, res) {
+  //add book to shelf
+  var gr = new goodreads.client({
+    key: credentials.key,
+    secret: credentials.secret,
+    accessToken: req.data.token,
+    accessSecret: req.data.secret
+  });
+  // example
+  // gr.addBooksToShelf({bookId: '62291', shelf: 'a'}, function(err, data, results) {
+  //   if (err) {
+  //     res.status(err.statusCode).send(err.data);
+  //   } else {
+  //     res.status(202).send(data);
+  //   }
+  // });
+
+  gr.addBooksToShelf(req.data, function(err, data, results) {
+    if (err) {
+      res.status(err.statusCode).send(err.data);
+    } else {
+      res.status(202).send(data);
+    }
+  });
+});
+
 
 app.get('/userShelves', function(req, res) {
   //list all of a user's shelves

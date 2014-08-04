@@ -87,18 +87,7 @@
       //   console.log(arguments);
       // });
       console.log('access:', this.options.accessToken, this.options.accessSecret);
-      oa.post('https://www.goodreads.com/shelf/add_to_shelf.xml', this.options.accessToken, this.options.accessSecret, {name: params.shelf, book_id: params.bookId}, function(error, data, results) {
-        console.log('added');
-        console.log(arguments);
-      });
-
-
-      // Params:
-      // - key: Developer key (required)
-      // - id: Goodreads user id (required)
-      // - name: Name of the shelf (required)
-      // - book_id: Goodreads book_id (required)
-      // this.options.path = 'http://www.goodreads.com/shelf/add_to_shelf/{id}.xml&v2?key={key}&shelf={shelf}'.supplant({id: params.id, key: this.options.key, shelf: params.shelf});
+      oa.post('https://www.goodreads.com/shelf/add_to_shelf.xml', this.options.accessToken, this.options.accessSecret, {name: params.shelf, book_id: params.bookId}, callback);
     };
 
     /* REVIEWS */
@@ -134,7 +123,7 @@
     Goodreads.prototype.searchAuthor = function(author, callback) {
       this.options.path = 'https://www.goodreads.com/api/author_url/' + encodeURI(author) + '?key=' + this.options.key;
       return this.getRequest(callback);
-    };    
+    };
 
     /* NOTE: Not Working Yet!!!! */
     Goodreads.prototype.getFriends = function(userId, accessToken, accessTokenSecret, callback) {

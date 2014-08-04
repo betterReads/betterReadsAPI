@@ -46,8 +46,8 @@ Params:
 Based off Goodreads' [shelves.add_to_shelf](https://www.goodreads.com/api#shelves.add_to_shelf)
 
 Params:
-- key: Developer key (required)
-- id: Goodreads user id (required)
+- token: OAuth access token (required)
+- secret: OAuth access secret (required)
 - name: Name of the shelf (required)
 - book_id: Goodreads book_id (required)
 
@@ -92,6 +92,15 @@ Params:
 - field: Field to search; title, author, genre, or all (optional, default all)
 
 
+##Authenticate user
+
+###URL Endpoint: /authenticate
+
+###GET OAuth user authentication details; necessary prerequisite for some API methods
+
+Params:
+- key: Developer key (required)
+- secret: Developer secret (required)
 
 
 
