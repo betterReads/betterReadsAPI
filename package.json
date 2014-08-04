@@ -11,8 +11,7 @@
     "express": "^4.7.2",
     "jasmine-node": "^1.14.5",
     "oauth": "^0.9.12",
-    "passport": "^0.2.0",
-    "passport-goodreads": "^0.1.2",
+    "open": "0.0.5",
     "request": "^2.39.0",
     "xml2js": "^0.4.4"
   },
