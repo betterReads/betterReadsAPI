@@ -23,18 +23,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-//download html from iframe
-var getIframeHtml = function(url, callback) {
-  request(url, function (error, response, body) {
-    if (error) {
-      throw error;
-    }
-    if (!error && response.statusCode == 200) {
-      callback(body);
-    }
-  });
-};
-
 //set up goodreads object with key and secret
 var initGR = function(req) {
   if (req.method==='GET') {
@@ -54,19 +42,28 @@ var initGR = function(req) {
   return gr;
 };
 
-// var gr = initGR({method: undefined});
-// gr.requestToken(function(data) {
-//   console.log(data);
-//   open(data.url);
-// });
+//initialize and get tokens
+var auth = {};
+var gr = initGR({method: undefined});
+gr.requestToken(function(data) {
+  auth.token =  data.oauthToken;
+  auth.secret = data.oauthTokenSecret;
+  console.log(data);
+  // open(data.url);
+});
 
-//search for author
-//only returns one result
-// gr.searchAuthor('Vonnegut', function(json) {
-//   if (json) {
-//     console.log(json.GoodreadsResponse.author);
-//   }
-// });
+
+//download html from iframe
+var getIframeHtml = function(url, callback) {
+  request(url, function (error, response, body) {
+    if (error) {
+      throw error;
+    }
+    if (!error && response.statusCode == 200) {
+      callback(body);
+    }
+  });
+};
 
 //integrate NYT best seller API
 
@@ -75,6 +72,27 @@ var initGR = function(req) {
 //add book to shelf (to-read, read, etc)
 
 //rate book
+
+//add book to shelf
+setTimeout(function() {
+  console.log(auth);
+  var gr = new goodreads.client({
+    key: credentials.key,
+    secret: credentials.secret,
+    accessToken: auth.token,
+    accessSecret: auth.secret
+  });
+  gr.addBooksToShelf({bookId: '62291', shelf: 'to-read'});
+}, 2000);
+
+app.post('/booksOnShelf', function(req, res) {
+  var gr = new goodreads.client({
+    key: credentials.key,
+    secret: credentials.secret,
+    accessToken: auth.token,
+    accessSecret: auth.secret
+  });
+});
 
 //verify authentication
 app.get('/verifyAuthentication', function(req, res) {
