@@ -49,7 +49,7 @@ gr.requestToken(function(data) {
   auth.token =  data.oauthToken;
   auth.secret = data.oauthTokenSecret;
   console.log(data);
-  // open(data.url);
+  open(data.url);
 });
 
 
@@ -82,8 +82,8 @@ setTimeout(function() {
     accessToken: auth.token,
     accessSecret: auth.secret
   });
-  gr.addBooksToShelf({bookId: '62291', shelf: 'to-read'});
-}, 2000);
+  gr.addBooksToShelf({bookId: '62291', shelf: 'a'});
+}, 5000);
 
 app.post('/booksOnShelf', function(req, res) {
   var gr = new goodreads.client({

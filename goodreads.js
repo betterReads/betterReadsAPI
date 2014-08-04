@@ -31,8 +31,8 @@
         oauth_access_url: 'http://goodreads.com/oauth/access_token',
         oauth_version: '1.0',
         oauth_encryption: 'HMAC-SHA1',
-        accessToken: this.accessToken || '',
-        accessSecret: this.accessSecret || ''
+        accessToken: config.accessToken || '',
+        accessSecret: config.accessSecret || ''
       };
       this.oauthAccessToken = '';
       this.oauthAcessTokenSecret = '';
@@ -86,7 +86,8 @@
       //   console.log('added');
       //   console.log(arguments);
       // });
-      oa.post('https://www.goodreads.com/shelf/add_to_shelf.xml', {name: params.shelf, book_id: params.bookId}, this.options.accessToken, this.options.accessSecret, function(error, data, results) {
+      console.log('access:', this.options.accessToken, this.options.accessSecret);
+      oa.post('https://www.goodreads.com/shelf/add_to_shelf.xml', this.options.accessToken, this.options.accessSecret, {name: params.shelf, book_id: params.bookId}, function(error, data, results) {
         console.log('added');
         console.log(arguments);
       });
