@@ -6,6 +6,7 @@ var request = require('request');
 var cors=require('cors');
 var bodyParser = require('body-parser');
 var open = require('open');
+var parseString = require('xml2js').parseString;
 
 //load credentialls locally or from azure
 if (process.env.PORT===undefined) {
@@ -51,9 +52,30 @@ gr.requestToken(function(data) {
   console.log(data);
 
   // MUST UNCOMMENT THIS WHEN READY FOR OAUTH
-  // open(data.url);
+  open(data.url);
 });
 
+//get id of oauth user
+setTimeout(function() {
+  console.log(auth);
+  var gr = new goodreads.client({
+    key: credentials.key,
+    secret: credentials.secret,
+    accessToken: auth.token,
+    accessSecret: auth.secret
+  });
+
+  var params = {id: '4067289', shelf: 'to-read', page: 2, per_page: 5, sort: 'bossy'};
+  // gr.getBooksOnShelf(params, function(err, data, results) {
+  gr.getUserId(function(err, data, results) {
+    console.log(arguments);
+    // console.log(err, data);
+    // parseString(data, function(err, result) {
+    //   console.log(JSON.stringify(result));
+    // });
+  });
+
+}, 5000);
 
 //download html from iframe
 var getIframeHtml = function(url, callback) {
@@ -94,7 +116,7 @@ app.get('/booksOnShelf', function(req, res) {
 
   //example:
   // var params = {id: '4067289', shelf: 'to-read', page: 2, per_page: 5, sort: 'bossy'};
-  // gr.getSingleShelf(params, function(data) {
+  // gr.getBooksOnShelf(params, function(data) {
   //   console.log(data.GoodreadsResponse.books[0].book);
   // });
   console.log(req.query);

@@ -76,7 +76,16 @@
         this.options.path = this.options.path + '&order=' + params.order;
       }
 
-      return this.getRequest(callback);
+      //user oauth to get books
+      oa = new oauth(this.options.oauth_request_url, this.options.oauth_access_url, this.options.key, this.options.secret, this.options.oauth_version, this.options.callback, this.options.oauth_encryption);
+      // oa.post('https://www.goodreads.com/shelf/add_to_shelf.xml?name={shelf}&book_id={bookId}'.supplant({shelf: params.shelf, bookId: params.bookId}), this.options.accessToken, this.options.accessSecret, function(error, data, results) {
+      //   console.log('added');
+      //   console.log(arguments);
+      // });
+      console.log('access:', this.options.accessToken, this.options.accessSecret);
+      oa.get(this.options.path, this.options.accessToken, this.options.accessSecret, callback);
+
+      // return this.getRequest(callback);
     };
 
     Goodreads.prototype.addBooksToShelf = function(params, callback) {
@@ -139,6 +148,13 @@
       });
     };
     /* OAUTH */
+    Goodreads.prototype.getUserId = function(callback) {
+      oa = new oauth(this.options.oauth_request_url, this.options.oauth_access_url, this.options.key, this.options.secret, this.options.oauth_version, this.options.callback, this.options.oauth_encryption);
+
+      console.log('access:', this.options.accessToken, this.options.accessSecret);
+      oa.get('https://www.goodreads.com/api/auth_user', this.options.accessToken, this.options.accessSecret, callback);
+    };
+
     Goodreads.prototype.requestToken = function(callback) {
       var oa;
       oa = new oauth(this.options.oauth_request_url, this.options.oauth_access_url, this.options.key, this.options.secret, this.options.oauth_version, this.options.callback, this.options.oauth_encryption);
