@@ -52,7 +52,7 @@ gr.requestToken(function(data) {
   auth.url = data.url;
 
   // MUST UNCOMMENT THIS TO TEST OAUTH
-  open(data.url);
+  // open(data.url);
 });
 
 setTimeout(function() {
@@ -109,8 +109,11 @@ app.get('/preAuthenticate', function(req, res) {
 
 
 app.get('/authenticate', function(req, res) {
+  console.log('authenticating');
+  console.log(req.query);
   var gr = initGR(req);
-  gr.processCallback(req.query.requestToken, req.query.reqSecret, 1, function(err, accessToken, accessSecret, results) {
+
+  gr.processCallback(req.query.requestToken, req.query.requestSecret, 1, function(err, accessToken, accessSecret, results) {
     if (err) {
       res.status(400).send(err);
     } else {
