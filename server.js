@@ -39,43 +39,20 @@ var initGR = function(req) {
     'key': credentials.key,
     'secret': credentials.secret
   });
-
   return gr;
 };
 
 //initialize and get tokens
-var auth = {};
-var gr = initGR({method: undefined});
-gr.requestToken(function(data) {
-  auth.token =  data.oauthToken;
-  auth.secret = data.oauthTokenSecret;
-  console.log(data);
+// var auth = {};
+// var gr = initGR({method: undefined});
+// gr.requestToken(function(data) {
+//   auth.token =  data.oauthToken;
+//   auth.secret = data.oauthTokenSecret;
+//   auth.url = data.url;
 
-  // MUST UNCOMMENT THIS WHEN READY FOR OAUTH
-  open(data.url);
-});
-
-//get id of oauth user
-setTimeout(function() {
-  console.log(auth);
-  var gr = new goodreads.client({
-    key: credentials.key,
-    secret: credentials.secret,
-    accessToken: auth.token,
-    accessSecret: auth.secret
-  });
-
-  var params = {id: '4067289', shelf: 'to-read', page: 2, per_page: 5, sort: 'bossy'};
-  // gr.getBooksOnShelf(params, function(err, data, results) {
-  gr.getUserId(function(err, data, results) {
-    console.log(arguments);
-    // console.log(err, data);
-    // parseString(data, function(err, result) {
-    //   console.log(JSON.stringify(result));
-    // });
-  });
-
-}, 5000);
+//   // MUST UNCOMMENT THIS TO TEST OAUTH
+//   // open(data.url);
+// });
 
 //download html from iframe
 var getIframeHtml = function(url, callback) {
@@ -104,9 +81,9 @@ app.get('/authenticate', function(req, res) {
   });
 });
 
-//verify authentication
 app.get('/verifyAuthentication', function(req, res) {
-  console.log(req.query);
+  //verify authentication
+  console.log(req);
   res.status(200).send('Verified!');
 });
 
@@ -114,11 +91,6 @@ app.get('/booksOnShelf', function(req, res) {
   //get all books from certain shelf
   //max per_page of 200
 
-  //example:
-  // var params = {id: '4067289', shelf: 'to-read', page: 2, per_page: 5, sort: 'bossy'};
-  // gr.getBooksOnShelf(params, function(data) {
-  //   console.log(data.GoodreadsResponse.books[0].book);
-  // });
   console.log(req.query);
 
   var gr = initGR(req);
@@ -130,20 +102,7 @@ app.get('/booksOnShelf', function(req, res) {
 
 app.post('/booksOnShelf', function(req, res) {
   //add book to shelf
-  var gr = new goodreads.client({
-    key: credentials.key,
-    secret: credentials.secret,
-    accessToken: req.data.token,
-    accessSecret: req.data.secret
-  });
-  // example
-  // gr.addBooksToShelf({bookId: '62291', shelf: 'a'}, function(err, data, results) {
-  //   if (err) {
-  //     res.status(err.statusCode).send(err.data);
-  //   } else {
-  //     res.status(202).send(data);
-  //   }
-  // });
+  var gr = initGR(req);
 
   gr.addBooksToShelf(req.data, function(err, data, results) {
     if (err) {
@@ -157,21 +116,6 @@ app.post('/booksOnShelf', function(req, res) {
 
 app.get('/userShelves', function(req, res) {
   //list all of a user's shelves
-
-  //example
-  // gr.getShelves({id: '4067289', page: 1}, function(data) {
-  //   var userShelves=[];
-  //   if (data) {
-  //     var shelves=data.GoodreadsResponse.shelves[0].user_shelf;
-  //     // console.log(shelves);
-  //     for (var i=0; i<shelves.length; i++) {
-  //       var shelf = shelves[i];
-  //       console.log(shelf.name, shelf.id);
-  //       userShelves.push(shelf.name);
-  //     }
-  //     console.log(userShelves);
-  //   }
-  // });
 
   console.log(req.query);
   var gr = initGR(req);
@@ -187,16 +131,6 @@ app.get('/userShelves', function(req, res) {
 app.get('/searchBooks', function(req, res) {
   //search for books
 
-  // example
-  // gr.searchBooks({query: 'vonnegut', page: 2, search: 'author'}, function(json) {
-  //   if (json) {
-  //     //list of books
-  //     console.log(json.GoodreadsResponse.search[0].results[0].work);
-  //     //book image details
-  //     console.log(json.GoodreadsResponse.search[0].results[0].work[0].best_book[0]);
-  //   }
-  // });
-
   console.log(req.query);
   var gr = initGR(req);
 
@@ -207,24 +141,6 @@ app.get('/searchBooks', function(req, res) {
 
 app.get('/bookReviews', function(req, res) {
   //get reviews based on book isbn
-
-  // example
-  // returns an iframe; need to adjust CSS to as to make it look nicer
-  // gr.getReviewsByIsbn('1400067820', function(json) {
-  //   //pull out iframe data
-  //   var xml=json.GoodreadsResponse.book[0].reviews_widget[0];
-
-  //   //search for iframe url
-  //   var iframeInd = xml.indexOf('<iframe');
-  //   var iframeEnd = xml.indexOf('width', iframeInd);
-
-  //   var iframeUrl = xml.slice(iframeInd+29, iframeEnd-2);
-  //   console.log(iframeUrl);
-
-  //   //load html from iframe link
-  //   getIframeHtml(iframeUrl);
-
-  // });
 
   console.log(req.query);
   var gr = initGR(req);
