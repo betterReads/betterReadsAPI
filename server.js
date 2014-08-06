@@ -124,6 +124,7 @@ app.get('/authenticate', function(req, res) {
 });
 
 app.get('/friendUpdates', function(req, res) {
+  console.log(req.query);
   var gr = new goodreads.client({
     key: credentials.key,
     secret: credentials.secret,
@@ -136,7 +137,7 @@ app.get('/friendUpdates', function(req, res) {
       if (err) {
         res.status(400).send(err);
       } else {
-        res.status(200).send(result);
+        res.status(200).send(result.GoodreadsResponse.updates[0].update);
       }
     });
   });
