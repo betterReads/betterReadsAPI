@@ -131,6 +131,13 @@
       this.options.path = 'https://www.goodreads.com/api/author_url/' + encodeURI(author) + '?key=' + this.options.key;
       return this.getRequest(callback);
     };
+    /* FRIENDS */
+    Goodreads.prototype.getUpdates = function(callback) {
+      oa = new oauth(this.options.oauth_request_url, this.options.oauth_access_url, this.options.key, this.options.secret, this.options.oauth_version, this.options.callback, this.options.oauth_encryption);
+
+      // console.log('access:', this.options.accessToken, this.options.accessSecret, this.options.key);
+      oa.get('https://www.goodreads.com/updates/friends.xml', this.options.accessToken, this.options.accessSecret, callback);
+    };    
 
     /* NOTE: Not Working Yet!!!! */
     Goodreads.prototype.getFriends = function(userId, accessToken, accessTokenSecret, callback) {
@@ -177,32 +184,33 @@
       var oa;
       oa = new oauth(this.options.oauth_request_url, this.options.oauth_access_url, this.options.key, this.options.secret, this.options.oauth_version, this.options.callback, this.options.oauth_encryption);
       return oa.getOAuthAccessToken(oauthToken, oauthTokenSecret, authorize, function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
-        var parser;
-        parser = new xml2js.Parser();
-        if (error) {
-          callback('Error getting OAuth access token : ' + (util.inspect(error)) + '[' + oauthAccessToken + '] [' + oauthAccessTokenSecret + '] [' + (util.inspect(results)) + ']', 500);
-        } else {
-          oa.get('http://www.goodreads.com/api/auth_user', oauthAccessToken, oauthAccessTokenSecret, function(error, data, response) {
-            if (error) {
-              return callback('Error getting User ID : ' + (util.inspect(error)), 500);
-            } else {
-              return parser.parseString(data);
-            }
-          });
-        }
-        return parser.on('end', function(result) {
-          if (result.user['@'].id !== null) {
-            return callback({
-              'username': result.user.name,
-              'userid': result.user['@'].id,
-              'success': 1,
-              'accessToken': oauthAccessToken,
-              'accessTokenSecret': oauthAccessTokenSecret
-            });
-          } else {
-            return callback('Error: Invalid XML response received from Goodreads', 500);
-          }
-        });
+        return callback(error, oauthAccessToken, oauthAccessTokenSecret, results);
+        // var parser;
+        // parser = new xml2js.Parser();
+        // if (error) {
+        //   callback('Error getting OAuth access token : ' + (util.inspect(error)) + '[' + oauthAccessToken + '] [' + oauthAccessTokenSecret + '] [' + (util.inspect(results)) + ']', 500);
+        // } else {
+        //   oa.get('http://www.goodreads.com/api/auth_user', oauthAccessToken, oauthAccessTokenSecret, function(error, data, response) {
+        //     if (error) {
+        //       return callback('Error getting User ID : ' + (util.inspect(error)), 500);
+        //     } else {
+        //       return parser.parseString(data);
+        //     }
+        //   });
+        // }
+        // return parser.on('end', function(result) {
+        //   if (result.user['@'].id !== null) {
+        //     return callback({
+        //       'username': result.user.name,
+        //       'userid': result.user['@'].id,
+        //       'success': 1,
+        //       'accessToken': oauthAccessToken,
+        //       'accessTokenSecret': oauthAccessTokenSecret
+        //     });
+        //   } else {
+        //     return callback('Error: Invalid XML response received from Goodreads', 500);
+        //   }
+        // });
       });
     };
     /* API: 'GET' */
