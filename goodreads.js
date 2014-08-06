@@ -134,8 +134,6 @@
     /* FRIENDS */
     Goodreads.prototype.getUpdates = function(callback) {
       oa = new oauth(this.options.oauth_request_url, this.options.oauth_access_url, this.options.key, this.options.secret, this.options.oauth_version, this.options.callback, this.options.oauth_encryption);
-
-      // console.log('access:', this.options.accessToken, this.options.accessSecret, this.options.key);
       oa.get('https://www.goodreads.com/updates/friends.xml', this.options.accessToken, this.options.accessSecret, callback);
     };    
 
@@ -153,8 +151,6 @@
       });
     };
     /* OAUTH */
-
-    /* THIS DOESN'T WORK YET */
     Goodreads.prototype.getUserId = function(callback) {
       oa = new oauth(this.options.oauth_request_url, this.options.oauth_access_url, this.options.key, this.options.secret, this.options.oauth_version, this.options.callback, this.options.oauth_encryption);
 
@@ -173,8 +169,8 @@
         } else {
           url = 'https://goodreads.com/oauth/authorize?oauth_token=' + oauthToken + '&oauth_callback=' + oa._authorize_callback;
           return callback({
-            oauthToken: oauthToken,
-            oauthTokenSecret: oauthTokenSecret,
+            requestToken: oauthToken,
+            requestSecret: oauthTokenSecret,
             url: url
           });
         }

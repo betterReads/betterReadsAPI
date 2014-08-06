@@ -47,8 +47,8 @@ var auth = {};
 var gr = initGR({method: undefined});
 gr.requestToken(function(data) {
   console.log(data);
-  auth.token =  data.oauthToken;
-  auth.secret = data.oauthTokenSecret;
+  auth.token =  data.requestToken;
+  auth.secret = data.requestSecret;
   auth.url = data.url;
 
   // MUST UNCOMMENT THIS TO TEST OAUTH
@@ -74,7 +74,9 @@ setTimeout(function() {
       accessSecret: oauthAccessTokenSecret
     });
     gr2.getUpdates(function(err, data, results) {
-      console.log(err, data);
+      parseString(data, function(err, result) {
+        console.log(result);
+      });
     });
 
   });
@@ -98,11 +100,44 @@ var getIframeHtml = function(url, callback) {
 //rate book
 //find goodreads id from isbn
 
-app.get('/authenticate', function(req, res) {
+app.get('/preAuthenticate', function(req, res) {
   var gr = initGR(req);
   gr.requestToken(function(data) {
     res.status(200).send(data);
   });
+});
+
+
+app.get('/authenticate', function(req, res) {
+  var gr = initGR(req);
+  gr.processCallback(req.query.requestToken, req.query.reqSecret, 1, function(err, accessToken, accessSecret, results) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send({accessToken: accessToken, accessSecret: accessSecret});
+    }
+    
+  });
+});
+
+app.get('/friendUpdates', function(req, res) {
+  var gr = new goodreads.client({
+    key: credentials.key,
+    secret: credentials.secret,
+    accessToken: req.query.accessToken,
+    accessSecret: req.query.accessSecret
+  });
+
+  gr.getUpdates(function(err, data, results) {
+    parseString(data, function(err, result) {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.status(200).send(result);
+      }
+    });
+  });
+
 });
 
 app.get('/verifyAuthentication', function(req, res) {
