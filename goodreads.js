@@ -57,9 +57,12 @@
     };
     Goodreads.prototype.getBooksOnShelf = function(params, callback) {
       //set up base path with required params
-      this.options.path = 'http://www.goodreads.com/review/list/{id}.xml&v2?key={key}&shelf={shelf}'.supplant({id: params.id, key: this.options.key, shelf: params.shelf});
+      this.options.path = 'http://www.goodreads.com/review/list/{id}.xml&v2?key={key}'.supplant({id: params.id, key: this.options.key, shelf: params.shelf});
 
       //check for optional params
+      if (params.shelf) {
+        this.options.path = this.options.path + '&shelf=' + params.shelf;
+      }
       if (params.page) {
         this.options.path = this.options.path + '&page=' + params.page;
       }
