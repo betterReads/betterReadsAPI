@@ -113,6 +113,18 @@
       return this.getRequest(callback);
     };
 
+    /* BOOK INFO */
+    Goodreads.prototype.getBookDetail = function(params, callback) {
+      //set up base path with required params
+      if (params.isbn) {
+        this.options.path = 'https://www.goodreads.com/book/isbn?isbn={isbn}&key={key}'.supplant({isbn: params.isbn, key: this.options.key});
+      } else {
+        this.options.path = 'https://www.goodreads.com/book/show?format=xml&key={key}&id={book_id}'.supplant({key: this.options.key, book_id: params.book_id});
+      }
+
+      return this.getRequest(callback);
+    };
+
     /* SEARCH */
     // title, author, genre, all
     Goodreads.prototype.searchBooks = function(params, callback) {

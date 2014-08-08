@@ -55,6 +55,7 @@ gr.requestToken(function(data) {
   // open(data.url);
 });
 
+
 setTimeout(function() {
   var gr = new goodreads.client({
     key: credentials.key,
@@ -191,6 +192,15 @@ app.get('/searchBooks', function(req, res) {
   var gr = initGR(req);
   gr.searchBooks(req.query, function(data) {
     res.status(200).send(JSON.stringify(data.GoodreadsResponse.search[0].results[0].work));
+  });
+});
+
+app.get('/bookDetail', function(req, res) {
+  //search for books
+  console.log(req.query);
+  var gr = initGR(req);
+  gr.getBookDetail(req.query, function(data) {
+    res.status(200).send(JSON.stringify(data.GoodreadsResponse.book[0]));
   });
 });
 

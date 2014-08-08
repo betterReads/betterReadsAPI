@@ -91,6 +91,17 @@ Params:
 - page: Which page to return; 1-N (optional, default 1)
 - field: Field to search; title, author, genre, or all (optional, default all)
 
+## Book detail by ISBN or Goodreads book id
+
+###URL Endpoint: /bookDetail
+
+###GET book detail
+Based off Goodreads' [book.show](https://www.goodreads.com/api#book.show) and [book.show_by_isbn](https://www.goodreads.com/api#book.show_by_isbn)
+
+Params:
+- key: Developer key (required)
+- isbn: The ISBN of the book (one of isbn or book_id is required)
+- book_id: Goodreads book_id
 
 ##Authenticate user
 
