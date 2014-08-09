@@ -1,5 +1,6 @@
 var parseString = require('xml2js').parseString;
 var OperationHelper = require('apac').OperationHelper;
+var request = require('request');
 
 Morereads = {
   getBookImages: function(params, callback) {
@@ -13,8 +14,11 @@ Morereads = {
       'IdType': 'ISBN',
       'ItemId': params.isbn,
       'SearchIndex': 'Books',
-      'ResponseGroup': 'Images'
+      'ResponseGroup': 'Images,ItemAttributes'
     }, callback);
+  },
+  getUSATodayBestSellers: function(params, callback) {
+    request('http://api.usatoday.com/open/bestsellers/books/ThisWeek?api_key=' + params.USATodayKey, callback);
   }
 };
 

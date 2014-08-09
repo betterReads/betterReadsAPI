@@ -21,8 +21,43 @@ if (process.env.PORT===undefined) {
   };
 }
 
-request('http://api.usatoday.com/open/bestsellers/books/ThisWeek?api_key=' + credentials.USATodayKey, function(err, response, body) {
-  console.log(JSON.parse(body).BookLists[0]);
+morereads.getUSATodayBestSellers({USATodayKey: credentials.USATodayKey}, function(err, response, body) {
+  var bookImages = {};
+  var books = JSON.parse(body).BookLists[0].BookListEntries;
+  console.log(books);
+  var isbns=[];
+  for (var b = 0; b<50; b++) {
+    var book=books[b];
+    var isbn=book.ISBN.replace(/\s+/g, '');
+    isbns.push(isbn);
+    if (isbns.length===3) {
+      (function(isbns, b) {   
+        console.log(isbns);
+        morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: isbns.join(',')}, function(results) {
+          if (results.ItemLookupErrorResponse) {
+            console.log(JSON.stringify(results.ItemLookupErrorResponse));
+          } else {          
+            var images = results.ItemLookupResponse.Items[0].Item;
+            // console.log(images);
+            for (var i=0; i<images.length; i++) {
+              var image = images[i]
+              console.log(image);
+              var isbnContainer = image.ItemAttributes[0].ISBN || image.ItemAttributes[0].EISBN;
+              var thisIsbn = isbnContainer[0];
+              console.log(thisIsbn)
+              if (!(thisIsbn in bookImages)) {
+                console.log('not in bookImages');
+                bookImages[thisIsbn] = image.LargeImage[0].URL[0];
+              }
+              console.log('book images', bookImages);
+            }
+          }
+        });
+      })(isbns, b);
+
+      // isbns=[];
+    }
+  }
 });
 
 // var opHelper = new OperationHelper({
@@ -169,6 +204,16 @@ app.get('/bookImages', function(req, res) {
           }
         });
       }
+  });
+});
+
+app.get('/USATodayBooks', function(req, res) {
+  morereads.getUSATodayBestSellers({USATodayKey: credentials.USATodayKey}, function(err, response, body) {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send(JSON.parse(body).BookLists[0]);
+    }
   });
 });
 
