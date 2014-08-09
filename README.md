@@ -103,6 +103,16 @@ Params:
 - isbn: The ISBN of the book (one of isbn or book_id is required)
 - book_id: Goodreads book_id
 
+##Book images from Amazon
+
+###URL Endpoint: /bookImages
+
+###GET Amazon book images by ISBN
+- awsId: Amazon Web Services API ID (required)
+- awsSecret: Amazon Web Services API secret (required)
+- assocId: Amazon Associate ID (required)
+- isbn: String of up to ten comma delimited book ISBNs (required)
+
 ##Authenticate user
 
 ###URL Endpoint: /authenticate

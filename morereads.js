@@ -2,16 +2,16 @@ var parseString = require('xml2js').parseString;
 var OperationHelper = require('apac').OperationHelper;
 
 Morereads = {
-  getBookImages: function(credentials, isbns, callback) {
+  getBookImages: function(params, callback) {
     var opHelper = new OperationHelper({
-      awsId: credentials.awsId,
-      awsSecret: credentials.awsSecret,
-      assocId: credentials.assocId
+      awsId: params.awsId,
+      awsSecret: params.awsSecret,
+      assocId: params.assocId
     });
 
     return opHelper.execute('ItemLookup', {
       'IdType': 'ISBN',
-      'ItemId': isbns,
+      'ItemId': params.isbn,
       'SearchIndex': 'Books',
       'ResponseGroup': 'Images'
     }, callback);

@@ -21,6 +21,10 @@ if (process.env.PORT===undefined) {
   };
 }
 
+request('http://api.usatoday.com/open/bestsellers/books/ThisWeek?api_key=' + credentials.USATodayKey, function(err, response, body) {
+  console.log(JSON.parse(body).BookLists[0]);
+});
+
 // var opHelper = new OperationHelper({
 //   awsId: credentials.awsId,
 //   awsSecret: credentials.awsSecret,
@@ -55,15 +59,16 @@ if (process.env.PORT===undefined) {
 //   });
 // });
 
-morereads.getBookImages(credentials, '075640407X,0553381695,0802130305,0763662585', function(err, results) {
-  parseString(results, function(err, data) {
-    var products = data.ItemLookupResponse.Items[0].Item;
-    console.log(products);
-    for (var product = 0; product < products.length; product++) {
-      console.log(JSON.stringify(products[product].LargeImage));
-    }
-  });
-});
+
+// morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: '075640407X,0553381695,0802130305,0763662585'}, function(err, results) {
+//   parseString(results, function(err, data) {
+//     var products = data.ItemLookupResponse.Items[0].Item;
+//     console.log(products);
+//     for (var product = 0; product < products.length; product++) {
+//       console.log(JSON.stringify(products[product].LargeImage));
+//     }
+//   });
+// });
 
 
 
@@ -149,6 +154,23 @@ var getIframeHtml = function(url, callback) {
 //see friend updates
 //rate book
 //find goodreads id from isbn
+
+app.get('/bookImages', function(req, res) {
+  morereads.getBookImages(req.query, function(err, results) {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        parseString(results, function(err, data) {
+          if (err) {
+            res.status(400).send(err);
+          } else {
+            var products = data.ItemLookupResponse.Items[0].Item;
+            res.status(200).send(products);
+          }
+        });
+      }
+  });
+});
 
 app.get('/preAuthenticate', function(req, res) {
   var gr = initGR(req);
