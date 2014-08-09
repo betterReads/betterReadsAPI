@@ -7,6 +7,7 @@ var cors=require('cors');
 var bodyParser = require('body-parser');
 var open = require('open');
 var parseString = require('xml2js').parseString;
+var morereads = require('./morereads');
 
 var OperationHelper = require('apac').OperationHelper;
 
@@ -20,18 +21,47 @@ if (process.env.PORT===undefined) {
   };
 }
 
-var opHelper = new OperationHelper({
-  awsId: credentials.awsId,
-  awsSecret: credentials.awsSecret,
-  assocId: credentials.assocId
-});
+// var opHelper = new OperationHelper({
+//   awsId: credentials.awsId,
+//   awsSecret: credentials.awsSecret,
+//   assocId: credentials.assocId
+// });
 
-opHelper.execute('BrowseNodeLookup', {
-  'BrowseNodeId': '1000',
-  'ResponseGroup': 'TopSellers'
-}, function(err, results) {
+// opHelper.execute('BrowseNodeLookup', {
+//   'BrowseNodeId': '1000',
+//   'ResponseGroup': 'TopSellers',
+//   'ItemPage': '9'
+// }, function(err, results) {
+//   console.log(results);
+//   parseString(results, function(err, data) {
+//     var products = data.BrowseNodeLookupResponse.BrowseNodes[0].BrowseNode[0].TopSellers[0].TopSeller;
+//     console.log(products);
+//   });
+// });
+
+//search for book images by isbn
+// opHelper.execute('ItemLookup', {
+//   'IdType': 'ISBN',
+//   'ItemId': '075640407X,0553381695,0802130305,0763662585',
+//   'SearchIndex': 'Books',
+//   'ResponseGroup': 'Images'
+// }, function(err, results) {
+//   parseString(results, function(err, data) {
+//     var products = data.ItemLookupResponse.Items[0].Item;
+//     console.log(products);
+//     for (var product = 0; product < products.length; product++) {
+//       console.log(JSON.stringify(products[product].LargeImage));
+//     }
+//   });
+// });
+
+morereads.getBookImages(credentials, '075640407X,0553381695,0802130305,0763662585', function(err, results) {
   parseString(results, function(err, data) {
-    console.log(JSON.stringify(data.BrowseNodeLookupResponse.BrowseNodes[0].BrowseNode[0]));
+    var products = data.ItemLookupResponse.Items[0].Item;
+    console.log(products);
+    for (var product = 0; product < products.length; product++) {
+      console.log(JSON.stringify(products[product].LargeImage));
+    }
   });
 });
 
