@@ -6,6 +6,7 @@
     "start": "NODE_PATH=./config NODE_ENV=production nodemon server.js"
   },
   "dependencies": {
+    "apac": "0.0.14",
     "body-parser": "^1.5.2",
     "cors": "^2.4.1",
     "express": "^4.7.2",

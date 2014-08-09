@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var open = require('open');
 var parseString = require('xml2js').parseString;
 
+var OperationHelper = require('apac').OperationHelper;
+
 //load credentialls locally or from azure
 if (process.env.PORT===undefined) {
   var credentials = require('./credentials.js');
@@ -17,6 +19,23 @@ if (process.env.PORT===undefined) {
     secret: process.env['secret']
   };
 }
+
+var opHelper = new OperationHelper({
+  awsId: credentials.awsId,
+  awsSecret: credentials.awsSecret,
+  assocId: credentials.assocId
+});
+
+opHelper.execute('BrowseNodeLookup', {
+  'BrowseNodeId': '1000',
+  'ResponseGroup': 'TopSellers'
+}, function(err, results) {
+  parseString(results, function(err, data) {
+    console.log(JSON.stringify(data.BrowseNodeLookupResponse.BrowseNodes[0].BrowseNode[0]));
+  });
+});
+
+
 
 //initialize app and use cors & body parser
 var app = express();
