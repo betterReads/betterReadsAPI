@@ -29,68 +29,9 @@ if (process.env.PORT===undefined) {
 // });
 
 
-morereads.getUSATodayBestSellers({USATodayKey: credentials.USATodayKey}, function(err, response, body) {
-  var bookImages = {};
-  var books = JSON.parse(body).BookLists[0].BookListEntries;
-  console.log(books);
-  var isbns=[];
-  var calls=0;
-  var count=0;
-  var checks = ['ISBN', 'EISBN', 'EAN', 'ASIN'];
-  for (var b = 0; b<50; b++) {
-    var book=books[b];
-    var isbn=book.ISBN.replace(/\s+/g, '');
-    books[b].ISBN=isbn;
-    isbns.push(isbn);
-    if (isbns.length===10) {
-      (function(isbns, b) {
-        console.log(isbns);
-        morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: isbns.join(',')}, function(results) {
-          //increment call counter
-          calls++;
-          if (results.ItemLookupErrorResponse) {
-            console.log(JSON.stringify(results.ItemLookupErrorResponse));
-          } else {
-            var images = results.ItemLookupResponse.Items[0].Item;
-            for (var i=0; i<images.length; i++) {
-              var image = images[i];
-              console.log(image);
-              for (var c=0; c<checks.length; c++) {
-                var check=checks[c];
-                var thisIsbn;
-                if (image.ItemAttributes[0][check]) {
-                  thisIsbn = image.ItemAttributes[0][check][0]
-                } else if (image[check]) {
-                  thisIsbn = image[check][0];
-                }
-                  
-                if (thisIsbn && !(thisIsbn in bookImages)) {
-                  bookImages[thisIsbn] = image.LargeImage[0].URL[0];
-                  count++;
-                }
-              }
-            }
-          }
-          //once all calls returned, zip up data
-          if (calls===5) {
-            console.log('DONE!');
-            console.log(bookImages);
-            for (var B = 0; B<50; B++) {
-              var BOOK = books[B];
-              if (BOOK.ISBN in bookImages) {
-                BOOK.URL = bookImages[BOOK.ISBN];
-              }
-            }
-            console.log(books.slice(0, 50));
-            console.log(count);
-          }
-        });
-      })(isbns, b);
-
-      isbns=[];
-    }
-  }
-});
+// morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
+//   console.log(response);
+// });
 
 // var opHelper = new OperationHelper({
 //   awsId: credentials.awsId,
@@ -240,13 +181,19 @@ app.get('/bookImages', function(req, res) {
 });
 
 app.get('/USATodayBooks', function(req, res) {
-  morereads.getUSATodayBestSellers({USATodayKey: credentials.USATodayKey}, function(err, response, body) {
-    if (err) {
-      res.status(400).send(err);
-    } else {
-      res.status(200).send(JSON.parse(body).BookLists[0]);
-    }
-  });
+  if (req.images = true) {
+    morereads.getUTBSImages(req.query, function(response) {
+      res.status(200).send(response);
+    });    
+  } else {
+    morereads.getUSATodayBestSellers(req.query, function(err, response, body) {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.status(200).send(JSON.parse(body).BookLists[0]);
+      }
+    });
+  }
 });
 
 app.get('/preAuthenticate', function(req, res) {
