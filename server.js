@@ -17,7 +17,11 @@ if (process.env.PORT===undefined) {
 } else {
   var credentials = {
     key: process.env['key'],
-    secret: process.env['secret']
+    secret: process.env['secret'],
+    awsId: process.env['awsId'],
+    awsSecret: process.env['awsSecret'],
+    assocId: process.env['assocId'],
+    USATodayKey: process.env['USATodayKey']
   };
 }
 
