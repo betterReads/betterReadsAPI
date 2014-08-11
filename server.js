@@ -11,7 +11,7 @@ var morereads = require('./morereads');
 
 var OperationHelper = require('apac').OperationHelper;
 
-//load credentialls locally or from azure
+//load credentials locally or from azure
 if (process.env.PORT===undefined) {
   var credentials = require('./credentials.js');
 } else {
@@ -21,58 +21,10 @@ if (process.env.PORT===undefined) {
   };
 }
 
-// morereads.getUSATodayBestSellers({USATodayKey: credentials.USATodayKey}, function(err, response, body) {
-//   console.log(JSON.parse(body).BookLists[0].BookListDate.BookListAPIUrl);
-
-// });
-
-
-// morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: '9780345542892,9781400079155,9781595231123,B00LBFVNQS,9780545669931,9780142424179,9780142415436,9780062345219,9780440237686'}, function(results) {
-//   var items = results.ItemLookupResponse.Items[0].Item;
-//   for (var i=0; i<items.length; i++) {
-//     console.log(items[i].ASIN);
-//   }
-// });
-
 
 // morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
 //   console.log(response);
 // });
-
-// var opHelper = new OperationHelper({
-//   awsId: credentials.awsId,
-//   awsSecret: credentials.awsSecret,
-//   assocId: credentials.assocId
-// });
-
-// opHelper.execute('BrowseNodeLookup', {
-//   'BrowseNodeId': '1000',
-//   'ResponseGroup': 'TopSellers',
-//   'ItemPage': '9'
-// }, function(err, results) {
-//   console.log(results);
-//   parseString(results, function(err, data) {
-//     var products = data.BrowseNodeLookupResponse.BrowseNodes[0].BrowseNode[0].TopSellers[0].TopSeller;
-//     console.log(products);
-//   });
-// });
-
-//search for book images by isbn
-// opHelper.execute('ItemLookup', {
-//   'IdType': 'ISBN',
-//   'ItemId': '075640407X,0553381695,0802130305,0763662585',
-//   'SearchIndex': 'Books',
-//   'ResponseGroup': 'Images'
-// }, function(err, results) {
-//   parseString(results, function(err, data) {
-//     var products = data.ItemLookupResponse.Items[0].Item;
-//     console.log(products);
-//     for (var product = 0; product < products.length; product++) {
-//       console.log(JSON.stringify(products[product].LargeImage));
-//     }
-//   });
-// });
-
 
 // morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: '075640407X,0553381695,0802130305,0763662585'}, function(err, results) {
 //   parseString(results, function(err, data) {
@@ -84,13 +36,25 @@ if (process.env.PORT===undefined) {
 //   });
 // });
 
-
-
 //initialize app and use cors & body parser
 var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+// SERVER FUNCTIONS
+//download html from iframe
+var getIframeHtml = function(url, callback) {
+  request(url, function (error, response, body) {
+    if (error) {
+      throw error;
+    }
+    if (!error && response.statusCode == 200) {
+      callback(body);
+    }
+  });
+};
+// END OF SERVER FUNCTIONS
 
 //set up goodreads object with key and secret
 var initGR = function(req) {
@@ -151,18 +115,6 @@ setTimeout(function() {
   });
 }, 5000);
 
-//download html from iframe
-var getIframeHtml = function(url, callback) {
-  request(url, function (error, response, body) {
-    if (error) {
-      throw error;
-    }
-    if (!error && response.statusCode == 200) {
-      callback(body);
-    }
-  });
-};
-
 //TO DO:
 //integrate NYT best seller API
 //see friend updates
@@ -188,7 +140,8 @@ app.get('/bookImages', function(req, res) {
 
 app.get('/weeklyBestSellers', function(req, res) {
   if (req.query.source===undefined || req.query.source==='USAToday') {  
-    if (req.query.images = true) {
+    //only query images if explicitly requested
+    if (req.query.images===true) {
       morereads.getUTBSImages(req.query, function(response) {
         res.status(200).send(response);
       });    
