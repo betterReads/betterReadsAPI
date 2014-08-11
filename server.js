@@ -121,7 +121,6 @@ setTimeout(function() {
 
 //TO DO:
 //integrate NYT best seller API
-//see friend updates
 //rate book
 //find goodreads id from isbn
 
@@ -145,7 +144,7 @@ app.get('/bookImages', function(req, res) {
 app.get('/weeklyBestSellers', function(req, res) {
   if (req.query.source===undefined || req.query.source==='USAToday') {  
     //only query images if explicitly requested
-    if (req.query.images===true) {
+    if (req.query.images==='true') {
       morereads.getUTBSImages(req.query, function(response) {
         res.status(200).send(response);
       });    
