@@ -29,9 +29,12 @@ Morereads = {
       var date = list.BookListDate.BookListAPIUrl;
       console.log(date);
       //return data if already saved
-      if (USATodayCache[date]) {
+      if (date in USATodayCache) {
+        console.log('date in cache');
         callback(USATodayCache[date]);
         return;
+      } else {
+        console.log('date not in cache');
       }
       var books = list.BookListEntries;
       // console.log(books);
@@ -85,9 +88,6 @@ Morereads = {
                 USATodayCache[date] = topFifty;
                 callback(topFifty);
 
-                console.log('logging cache');
-                console.log(USATodayCache[date]);
-                console.log('cache logged');
                 return;
               }
             });

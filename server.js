@@ -35,16 +35,9 @@ if (process.env.PORT===undefined) {
 // });
 
 
-morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
-  console.log(response);
-});
-
-// setTimeout(function() {
-//   console.log('starting again');
-//   morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
-//     console.log(response);
-//   });
-// }, 45000)
+// morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
+//   console.log(response);
+// });
 
 // var opHelper = new OperationHelper({
 //   awsId: credentials.awsId,
