@@ -21,6 +21,12 @@ if (process.env.PORT===undefined) {
   };
 }
 
+// morereads.getUSATodayBestSellers({USATodayKey: credentials.USATodayKey}, function(err, response, body) {
+//   console.log(JSON.parse(body).BookLists[0].BookListDate.BookListAPIUrl);
+
+// });
+
+
 // morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: '9780345542892,9781400079155,9781595231123,B00LBFVNQS,9780545669931,9780142424179,9780142415436,9780062345219,9780440237686'}, function(results) {
 //   var items = results.ItemLookupResponse.Items[0].Item;
 //   for (var i=0; i<items.length; i++) {
@@ -29,9 +35,16 @@ if (process.env.PORT===undefined) {
 // });
 
 
-// morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
-//   console.log(response);
-// });
+morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
+  console.log(response);
+});
+
+// setTimeout(function() {
+//   console.log('starting again');
+//   morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
+//     console.log(response);
+//   });
+// }, 45000)
 
 // var opHelper = new OperationHelper({
 //   awsId: credentials.awsId,

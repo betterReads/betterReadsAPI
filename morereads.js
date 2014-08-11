@@ -2,6 +2,8 @@ var parseString = require('xml2js').parseString;
 var OperationHelper = require('apac').OperationHelper;
 var request = require('request');
 
+var USATodayCache = {};
+
 Morereads = {
   getBookImages: function(params, callback) {
     var opHelper = new OperationHelper({
@@ -23,7 +25,15 @@ Morereads = {
   getUTBSImages: function(params, callback) {
     Morereads.getUSATodayBestSellers({USATodayKey: params.USATodayKey}, function(err, response, body) {
       var bookImages = {};
-      var books = JSON.parse(body).BookLists[0].BookListEntries;
+      var list = JSON.parse(body).BookLists[0];
+      var date = list.BookListDate.BookListAPIUrl;
+      console.log(date);
+      //return data if already saved
+      if (USATodayCache[date]) {
+        callback(USATodayCache[date]);
+        return;
+      }
+      var books = list.BookListEntries;
       // console.log(books);
       var isbns=[];
       var calls=0;
@@ -71,7 +81,14 @@ Morereads = {
                     BOOK.URL = bookImages[BOOK.ISBN];
                   }
                 }
-                callback(books.slice(0, 50));
+                var topFifty = books.slice(0, 50);
+                USATodayCache[date] = topFifty;
+                callback(topFifty);
+
+                console.log('logging cache');
+                console.log(USATodayCache[date]);
+                console.log('cache logged');
+                return;
               }
             });
           })(isbns, b);
