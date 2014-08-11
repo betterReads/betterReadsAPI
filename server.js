@@ -186,19 +186,21 @@ app.get('/bookImages', function(req, res) {
   });
 });
 
-app.get('/USATodayBooks', function(req, res) {
-  if (req.images = true) {
-    morereads.getUTBSImages(req.query, function(response) {
-      res.status(200).send(response);
-    });    
-  } else {
-    morereads.getUSATodayBestSellers(req.query, function(err, response, body) {
-      if (err) {
-        res.status(400).send(err);
-      } else {
-        res.status(200).send(JSON.parse(body).BookLists[0]);
-      }
-    });
+app.get('/weeklyBestSellers', function(req, res) {
+  if (req.query.source===undefined || req.query.source==='USAToday') {  
+    if (req.query.images = true) {
+      morereads.getUTBSImages(req.query, function(response) {
+        res.status(200).send(response);
+      });    
+    } else {
+      morereads.getUSATodayBestSellers(req.query, function(err, response, body) {
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          res.status(200).send(JSON.parse(body).BookLists[0]);
+        }
+      });
+    }
   }
 });
 

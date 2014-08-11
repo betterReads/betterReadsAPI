@@ -2,6 +2,7 @@ var parseString = require('xml2js').parseString;
 var OperationHelper = require('apac').OperationHelper;
 var request = require('request');
 
+//set up storage for best sellers and images
 var USATodayCache = {};
 
 Morereads = {

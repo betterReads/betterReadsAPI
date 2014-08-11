@@ -87,7 +87,7 @@ Based off Goodreads' [search.books](https://www.goodreads.com/api#search.books)
 
 Params:
 - key: Developer key (required)
-- query: The query text to match against book title, author, and ISBN fields. Supports boolean operators and phrase searching. (required)
+- query: The query text to match against; book title, author, and ISBN fields. Supports boolean operators and phrase searching. (required)
 - page: Which page to return; 1-N (optional, default 1)
 - field: Field to search; title, author, genre, or all (optional, default all)
 
@@ -112,6 +112,15 @@ Params:
 - awsSecret: Amazon Web Services API secret (required)
 - assocId: Amazon Associate ID (required)
 - isbn: String of up to ten comma delimited book ISBNs (required)
+
+##Best Sellers
+
+###URL Endpoint: /weeklyBestSellers
+
+###GET weekly list of best sellers
+Params:
+- source: source of best seller list; USAToday; others to be added in the future (optional, default USAToday)
+- images: whether to return Amazon image URLs with list; true or false (optional, default false)
 
 ##Authenticate user
 
