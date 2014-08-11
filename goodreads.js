@@ -24,7 +24,7 @@
         port: 80,
         key: config.key,
         secret: config.secret,
-        callback: config.callback || 'http://localhost:8045/verifyAuthentication',
+        callback: config.callback || 'https://betterreadsapi.azurewebsites.net/verifyAuthentication',
         method: 'GET',
         path: '',
         oauth_request_url: 'http://goodreads.com/oauth/request_token',
@@ -182,7 +182,7 @@
           console.log(error);
           return callback('Error getting OAuth request token : ' + JSON.stringify(error), 500);
         } else {
-          url = 'https://goodreads.com/oauth/authorize?oauth_token=' + oauthToken + '&oauth_callback=' + oa._authorize_callback;
+          url = 'https://goodreads.com/oauth/authorize?mobile=1&oauth_token=' + oauthToken + '&oauth_callback=' + oa._authorize_callback;
           return callback({
             requestToken: oauthToken,
             requestSecret: oauthTokenSecret,
