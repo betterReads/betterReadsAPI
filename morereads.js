@@ -70,7 +70,7 @@ Morereads = {
                     }
                       
                     if (thisIsbn && !(thisIsbn in bookImages)) {
-                      bookImages[thisIsbn] = image.LargeImage[0].URL[0];
+                      bookImages[thisIsbn] = {image: image.LargeImage[0].URL[0], link: image.DetailPageURL[0]};
                     }
                   }
                 }
@@ -82,7 +82,8 @@ Morereads = {
                 for (var B = 0; B<50; B++) {
                   var BOOK = books[B];
                   if (BOOK.ISBN in bookImages) {
-                    BOOK.URL = bookImages[BOOK.ISBN];
+                    BOOK.URL = bookImages[BOOK.ISBN].image;
+                    BOOK.Amazon = bookImages[BOOK.ISBN].link;
                   }
                 }
                 var topFifty = books.slice(0, 50);

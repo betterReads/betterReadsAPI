@@ -33,10 +33,11 @@ if (process.env.PORT===undefined) {
 // morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: '075640407X,0553381695,0802130305,0763662585'}, function(err, results) {
 //   parseString(results, function(err, data) {
 //     var products = data.ItemLookupResponse.Items[0].Item;
-//     console.log(products);
-//     for (var product = 0; product < products.length; product++) {
-//       console.log(JSON.stringify(products[product].LargeImage));
-//     }
+//     console.log(products[0].DetailPageURL[0])
+//     // console.log(products);
+//     // for (var product = 0; product < products.length; product++) {
+//     //   console.log(JSON.stringify(products[product]));
+//     // }
 //   });
 // });
 
