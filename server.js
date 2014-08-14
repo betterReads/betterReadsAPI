@@ -260,6 +260,9 @@ app.get('/bookDetail', function(req, res) {
   console.log(req.query);
   var gr = initGR(req);
   gr.getBookDetail(req.query, function(data) {
+    if (data.error) {
+      res.status(400).send(data.error);
+    }
     res.status(200).send(JSON.stringify(data.GoodreadsResponse.book[0]));
   });
 });
