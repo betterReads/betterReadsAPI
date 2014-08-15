@@ -87,8 +87,8 @@ Morereads = {
                   }
                 }
                 var topFifty = books.slice(0, 50);
-                USATodayCache[date] = topFifty;
-                callback(topFifty);
+                USATodayCache[date] = {date: date, books: topFifty};
+                callback({date: date, books: topFifty});
 
                 return;
               }

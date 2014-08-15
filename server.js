@@ -25,9 +25,8 @@ if (process.env.PORT===undefined) {
   };
 }
 
-
-// morereads.getUTBSImages({USATodayKey: credentials.USATodayKey, awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId}, function(response) {
-//   console.log(response);
+// morereads.getUSATodayBestSellers({USATodayKey: credentials.USATodayKey}, function(err, response, data) {
+//   console.log(JSON.parse(data).BookLists);
 // });
 
 // morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: '075640407X,0553381695,0802130305,0763662585'}, function(err, results) {
