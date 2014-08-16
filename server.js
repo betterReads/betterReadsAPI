@@ -92,32 +92,33 @@ gr.requestToken(function(data) {
 });
 
 
-setTimeout(function() {
-  var gr = new goodreads.client({
-    key: credentials.key,
-    secret: credentials.secret,
-    accessToken: auth.token,
-    accessSecret: auth.secret
-  });
-  // gr.getUpdates(function(err, data, results) {
-  //   console.log(err, data);
-  // });
-  gr.processCallback(auth.token, auth.secret, 1, function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
-    console.log(error, oauthAccessToken, oauthAccessTokenSecret, results);
-    var gr2 = new goodreads.client({
-      key: credentials.key,
-      secret: credentials.secret,
-      accessToken: oauthAccessToken,
-      accessSecret: oauthAccessTokenSecret
-    });
-    gr2.getUpdates(function(err, data, results) {
-      parseString(data, function(err, result) {
-        console.log(result);
-      });
-    });
+// setTimeout(function() {
+//   var gr = new goodreads.client({
+//     key: credentials.key,
+//     secret: credentials.secret,
+//     accessToken: auth.token,
+//     accessSecret: auth.secret
+//   });
+//   // gr.getUpdates(function(err, data, results) {
+//   //   console.log(err, data);
+//   // });
+//   gr.processCallback(auth.token, auth.secret, 1, function(error, oauthAccessToken, oauthAccessTokenSecret, results) {
+//     console.log(error, oauthAccessToken, oauthAccessTokenSecret, results);
+//     var gr2 = new goodreads.client({
+//       key: credentials.key,
+//       secret: credentials.secret,
+//       accessToken: oauthAccessToken,
+//       accessSecret: oauthAccessTokenSecret
+//     });
+//     // gr2.getUpdates(function(err, data, results) {
+//     gr2.getUserId(function(err, data, results) {
+//       parseString(data, function(err, result) {
+//         console.log(result.GoodreadsResponse.user[0].$.id);
+//       });
+//     });
 
-  });
-}, 5000);
+//   });
+// }, 5000);
 
 //TO DO:
 //integrate NYT best seller API
@@ -192,12 +193,33 @@ app.get('/friendUpdates', function(req, res) {
     accessSecret: req.query.accessSecret
   });
 
-  gr.getUpdates(function(err, data, results) {
+  gr.getUserId(function(err, data, results) {
     parseString(data, function(err, result) {
       if (err) {
         res.status(400).send(err);
       } else {
         res.status(200).send(result.GoodreadsResponse.updates[0].update);
+      }
+    });
+  });
+
+});
+
+app.get('/userId', function(req, res) {
+  console.log(req.query);
+  var gr = new goodreads.client({
+    key: credentials.key,
+    secret: credentials.secret,
+    accessToken: req.query.accessToken,
+    accessSecret: req.query.accessSecret
+  });
+
+  gr.getUserId(function(err, data, results) {
+    parseString(data, function(err, result) {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        res.status(200).send(result.GoodreadsResponse.user[0].$.id);
       }
     });
   });
