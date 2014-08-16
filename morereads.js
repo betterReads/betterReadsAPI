@@ -72,7 +72,6 @@ Morereads = {
                     if (thisIsbn && !(thisIsbn in bookImages)) {
                       //backup link in case amazon returns no image
                       var imageUrl = image.LargeImage===undefined ? 'http://s.gr-assets.com/assets/nophoto/book/111x148-6204a98ba2aba2d1aa07b9bea87124f8.png' : image.LargeImage[0].URL[0];
-                      console.log('image', imageUrl);
                       bookImages[thisIsbn] = {image: imageUrl, link: image.DetailPageURL[0]};
                     }
                   }
