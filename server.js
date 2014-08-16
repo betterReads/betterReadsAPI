@@ -193,7 +193,7 @@ app.get('/friendUpdates', function(req, res) {
     accessSecret: req.query.accessSecret
   });
 
-  gr.getUserId(function(err, data, results) {
+  gr.getUpdates(function(err, data, results) {
     parseString(data, function(err, result) {
       if (err) {
         res.status(400).send(err);
