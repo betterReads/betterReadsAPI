@@ -244,8 +244,15 @@ app.get('/booksOnShelf', function(req, res) {
 
 app.post('/booksOnShelf', function(req, res) {
   //add book to shelf
-  var gr = initGR(req);
-  gr.addBooksToShelf(req.data, function(err, data, results) {
+  console.log(req.body);
+  var gr = new goodreads.client({
+    key: credentials.key,
+    secret: credentials.secret,
+    accessToken: req.body.accessToken,
+    accessSecret: req.body.accessSecret
+  });
+
+  gr.addBooksToShelf(req.body, function(err, data, results) {
     if (err) {
       res.status(err.statusCode).send(err.data);
     } else {

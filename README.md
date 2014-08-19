@@ -48,8 +48,8 @@ Based off Goodreads' [shelves.add_to_shelf](https://www.goodreads.com/api#shelve
 Params:
 - token: OAuth access token (required)
 - secret: OAuth access secret (required)
-- name: Name of the shelf (required)
-- book_id: Goodreads book_id (required)
+- shelf: Name of the shelf (required)
+- bookId: Goodreads book id (required)
 
 
 ##Book reviews by ISBN
