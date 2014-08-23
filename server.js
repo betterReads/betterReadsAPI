@@ -66,6 +66,7 @@ connection.connect(function(err) {
 });
 
 // DATABASE CREATION
+// connection.query('SELECT * from searches;', function(err, rows, fields) {
 // connection.query('INSERT INTO searches (userId, isbn) values (2, 200);', function(err, rows, fields) {
 // connection.query('CREATE TABLE searches ( \
 //                 id int NOT NULL AUTO_INCREMENT, \
@@ -74,19 +75,11 @@ connection.connect(function(err) {
 //                 isbn int, \
 //                 PRIMARY KEY(id));', function(err, rows, fields) {
 //   if (err) throw err;
-
 //   console.log(rows);
 // });
+// connection.end();
 
-connection.end();
-
-///////
-
-
-
-
-
-
+//ENDOF DB CREATION
 
 // SERVER FUNCTIONS
 //download html from iframe
@@ -161,11 +154,6 @@ gr.requestToken(function(data) {
 
 //   });
 // }, 5000);
-
-//TO DO:
-//integrate NYT best seller API
-//rate book
-//find goodreads id from isbn
 
 app.get('/bookImages', function(req, res) {
   morereads.getBookImages(req.query, function(err, results) {
@@ -332,6 +320,15 @@ app.get('/bookDetail', function(req, res) {
   gr.getBookDetail(req.query, function(data) {
     if (data.error) {
       res.status(400).send(data.error);
+    }
+    //save query to sql if id provided
+    if (req.query.id) {
+      console.log(req.query.id, data.GoodreadsResponse.book[0].isbn[0]);
+      connection.query('INSERT INTO searches (userId, isbn) values (?, ?);', [parseInt(req.query.id), parseInt(data.GoodreadsResponse.book[0].isbn[0])], function(err, rows, fields) {
+        if (err) {
+          throw err;
+        }
+      });
     }
     res.status(200).send(JSON.stringify(data.GoodreadsResponse.book[0]));
   });

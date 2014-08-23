@@ -99,6 +99,7 @@ Params:
 Based off Goodreads' [book.show](https://www.goodreads.com/api#book.show) and [book.show_by_isbn](https://www.goodreads.com/api#book.show_by_isbn)
 
 Params:
+- id: Goodreads user id (required)
 - key: Developer key (required)
 - isbn: The ISBN of the book (one of isbn or book_id is required)
 - book_id: Goodreads book_id
