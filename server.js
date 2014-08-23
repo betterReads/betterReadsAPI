@@ -49,19 +49,36 @@ app.use(bodyParser.json());
 
 ///////
 
-var connection = mysql.createPool({
-  connectionLimit: 10,
+var connection = mysql.createConnection({
   host: credentials.dbHost,
   user: credentials.dbUser,
-  password: credentials.dbPassword
+  password: credentials.dbPassword,
+  database: credentials.database
 });
 
-connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-  if (err) throw err;
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
 
-  console.log('The solution is: ', rows[0].solution);
+  console.log('connected as id ' + connection.threadId);
 });
 
+// DATABASE CREATION
+// connection.query('INSERT INTO searches (userId, isbn) values (2, 200);', function(err, rows, fields) {
+// connection.query('CREATE TABLE searches ( \
+//                 id int NOT NULL AUTO_INCREMENT, \
+//                 createdAt timestamp DEFAULT NOW(), \
+//                 userId int, \
+//                 isbn int, \
+//                 PRIMARY KEY(id));', function(err, rows, fields) {
+//   if (err) throw err;
+
+//   console.log(rows);
+// });
+
+connection.end();
 
 ///////
 
