@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var open = require('open');
 var parseString = require('xml2js').parseString;
 var morereads = require('./morereads');
+var mysql = require('mysql');
 
 var OperationHelper = require('apac').OperationHelper;
 
@@ -45,6 +46,30 @@ var app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+///////
+
+var connection = mysql.createPool({
+  connectionLimit: 10,
+  host: credentials.dbHost,
+  user: credentials.dbUser,
+  password: credentials.dbPassword
+});
+
+connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
+  if (err) throw err;
+
+  console.log('The solution is: ', rows[0].solution);
+});
+
+
+///////
+
+
+
+
+
+
 
 // SERVER FUNCTIONS
 //download html from iframe
