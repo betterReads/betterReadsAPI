@@ -47,38 +47,14 @@ app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-///////
-
-var connection = mysql.createConnection({
+//set up database connection
+var connection = mysql.createPool({
+  connectionLimit: 10,
   host: credentials.dbHost,
   user: credentials.dbUser,
   password: credentials.dbPassword,
   database: credentials.database
 });
-
-connection.connect(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
-
-  console.log('connected as id ' + connection.threadId);
-});
-
-// DATABASE CREATION
-// connection.query('SELECT * from searches;', function(err, rows, fields) {
-// connection.query('INSERT INTO searches (userId, isbn) values (2, 200);', function(err, rows, fields) {
-// connection.query('CREATE TABLE searches ( \
-//                 id int NOT NULL AUTO_INCREMENT, \
-//                 createdAt timestamp DEFAULT NOW(), \
-//                 userId int, \
-//                 isbn int, \
-//                 PRIMARY KEY(id));', function(err, rows, fields) {
-//   if (err) throw err;
-//   console.log(rows);
-// });
-// connection.end();
-//ENDOF DB CREATION
 
 // SERVER FUNCTIONS
 //download html from iframe
@@ -280,7 +256,6 @@ app.get('/bookDetail', function(req, res) {
     }
     //save query to sql if id provided
     if (req.query.id) {
-      console.log(req.query.id, data.GoodreadsResponse.book[0].isbn[0]);
       connection.query('INSERT INTO searches (userId, isbn) values (?, ?);', [parseInt(req.query.id), parseInt(data.GoodreadsResponse.book[0].isbn[0])], function(err, rows, fields) {
         if (err) {
           throw err;

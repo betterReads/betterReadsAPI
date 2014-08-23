@@ -39,3 +39,18 @@ gr.requestToken(function(data) {
 
 //   });
 // }, 5000);
+
+// DATABASE CREATION
+// connection.query('SELECT * from searches;', function(err, rows, fields) {
+// connection.query('INSERT INTO searches (userId, isbn) values (2, 200);', function(err, rows, fields) {
+// connection.query('CREATE TABLE searches ( \
+//                 id int NOT NULL AUTO_INCREMENT, \
+//                 createdAt timestamp DEFAULT NOW(), \
+//                 userId int, \
+//                 isbn int, \
+//                 PRIMARY KEY(id));', function(err, rows, fields) {
+//   if (err) throw err;
+//   console.log(rows);
+// });
+// connection.end();
+//ENDOF DB CREATION
