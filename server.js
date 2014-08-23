@@ -22,13 +22,13 @@ if (process.env.PORT===undefined) {
     awsId: process.env['awsId'],
     awsSecret: process.env['awsSecret'],
     assocId: process.env['assocId'],
-    USATodayKey: process.env['USATodayKey']
+    USATodayKey: process.env['USATodayKey'],
+    dbHost: process.env['dbHost'],
+    dbUser: process.env['dbUser'],
+    dbPassword: process.env['dbPassword'],
+    database: process.env['database']
   };
 }
-
-// morereads.getUSATodayBestSellers({USATodayKey: credentials.USATodayKey}, function(err, response, data) {
-//   console.log(JSON.parse(data).BookLists);
-// });
 
 // morereads.getBookImages({awsId: credentials.awsId, awsSecret: credentials.awsSecret, assocId: credentials.assocId, isbn: '075640407X,0553381695,0802130305,0763662585'}, function(err, results) {
 //   parseString(results, function(err, data) {
@@ -324,5 +324,4 @@ app.get('/', function(req, res){
 var server = app.listen(port, function(){
   console.log('Server is listening on port ' + port);
 });
-
 
